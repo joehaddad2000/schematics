@@ -6,7 +6,7 @@ This directory explains how the skill repository works and how to change it with
 
 1. Read [architecture.md](architecture.md) to understand the repository boundaries and canonical source.
 2. Read [development.md](development.md) before you edit the skill or manifests.
-3. Read [project-plan.md](project-plan.md) for the research baseline, completed migration, and local Git exit conditions.
+3. Read [project-plan.md](project-plan.md) for the research baseline, completed migration, and repository completion criteria.
 4. Read [the skill](../skills/create-plan-canvas/SKILL.md) and only the references needed for the current change.
 
 ## Core rule
