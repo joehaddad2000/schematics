@@ -1,0 +1,29 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "canvas-blocks",
+  "owner": {
+    "name": "Joe Haddad"
+  },
+  "metadata": {
+    "description": "Documented visual planning skills for product and engineering work."
+  },
+  "plugins": [
+    {
+      "name": "canvas-blocks",
+      "description": "Create documented visual plans with focused architecture, API, data-flow, sequence, and entity-relationship diagrams.",
+      "version": "1.0.0",
+      "source": "./",
+      "homepage": "https://github.com/joehaddad2000/canvas-blocks#readme",
+      "repository": "https://github.com/joehaddad2000/canvas-blocks",
+      "category": "productivity",
+      "keywords": [
+        "planning",
+        "architecture",
+        "api",
+        "erd",
+        "diagram",
+        "documentation"
+      ]
+    }
+  ]
+}

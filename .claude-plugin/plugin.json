@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "canvas-blocks",
+  "version": "1.0.0",
+  "description": "Create documented visual plans with focused architecture, API, data-flow, sequence, and entity-relationship diagrams.",
+  "author": {
+    "name": "Joe Haddad",
+    "url": "https://github.com/joehaddad2000"
+  },
+  "homepage": "https://github.com/joehaddad2000/canvas-blocks#readme",
+  "repository": "https://github.com/joehaddad2000/canvas-blocks",
+  "keywords": [
+    "planning",
+    "architecture",
+    "api",
+    "erd",
+    "diagram",
+    "documentation"
+  ]
+}
