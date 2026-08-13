@@ -1,7 +1,7 @@
-# Canvas Blocks
+# Schematics
 
-Canvas Blocks is an agent skill for creating documented visual plans.
-It turns complex product or engineering work into one durable Markdown plan and a small set of focused architecture, API, data-flow, sequence, or entity-relationship diagrams.
+Schematics is a collection of agent skills for planning and explaining technical work with durable documents and focused diagrams.
+The first skill, `visual-plan`, turns complex product or engineering work into one Markdown plan and a small set of architecture, API, data-flow, sequence, or entity-relationship views.
 
 The repository contains no application runtime.
 It has no custom schema, renderer, server, CLI, package manager, or build step.
@@ -31,17 +31,17 @@ Install the Diagram Design dependency first:
 npx skills add cathrynlavery/diagram-design --skill diagram-design
 ```
 
-Install Canvas Blocks from GitHub:
+Install Visual Plan from GitHub:
 
 ```bash
-npx skills add joehaddad2000/canvas-blocks --skill create-plan-canvas
+npx skills add joehaddad2000/schematics --skill visual-plan
 ```
 
 Target specific agents when required:
 
 ```bash
-npx skills add joehaddad2000/canvas-blocks \
-  --skill create-plan-canvas \
+npx skills add joehaddad2000/schematics \
+  --skill visual-plan \
   --agent claude-code codex
 ```
 
@@ -49,7 +49,7 @@ Use the current checkout during local development:
 
 ```bash
 npx skills add . \
-  --skill create-plan-canvas \
+  --skill visual-plan \
   --agent claude-code codex
 ```
 
@@ -62,16 +62,16 @@ Add and install Diagram Design:
 /plugin install diagram-design@diagram-design
 ```
 
-Add and install Canvas Blocks from GitHub:
+Add and install Schematics from GitHub:
 
 ```bash
-claude plugin marketplace add joehaddad2000/canvas-blocks
-claude plugin install canvas-blocks@canvas-blocks
+claude plugin marketplace add joehaddad2000/schematics
+claude plugin install schematics@schematics
 ```
 
 Use `claude plugin marketplace add .` when testing the current checkout.
 
-Claude Code exposes the skill under the plugin namespace as `/canvas-blocks:create-plan-canvas`.
+Claude Code exposes the skill under the plugin namespace as `/schematics:visual-plan`.
 Claude can also invoke it automatically when the request matches the skill description.
 
 ## Use the skill
@@ -79,20 +79,20 @@ Claude can also invoke it automatically when the request matches the skill descr
 Ask the agent in natural language:
 
 ```text
-Create a plan canvas for a new checkout frontend, public API, order backend, and relational data model.
+Create a visual plan for a new checkout frontend, public API, order backend, and relational data model.
 Show internal and external systems, API inputs and outputs, and a real ERD.
 ```
 
 You can also invoke it explicitly:
 
 ```text
-Use $create-plan-canvas to document this migration with an architecture view and an ERD.
+Use $visual-plan to document this migration with an architecture view and an ERD.
 ```
 
 In Claude Code plugin form, use:
 
 ```text
-/canvas-blocks:create-plan-canvas Plan this API and database change.
+/schematics:visual-plan Plan this API and database change.
 ```
 
 ## Design rules
@@ -108,13 +108,13 @@ In Claude Code plugin form, use:
 - Do not add a framework or runtime for interaction.
 - Use ASD-STE100 style for plan prose and preserve exact technical identifiers.
 
-The complete workflow is in [SKILL.md](skills/create-plan-canvas/SKILL.md).
-The output contract is in [plan-format.md](skills/create-plan-canvas/references/plan-format.md).
+The complete workflow is in [SKILL.md](skills/visual-plan/SKILL.md).
+The output contract is in [plan-format.md](skills/visual-plan/references/plan-format.md).
 
 ## Repository structure
 
 ```text
-canvas-blocks/
+schematics/
 ├── .claude-plugin/
 │   ├── marketplace.json
 │   └── plugin.json
@@ -126,7 +126,7 @@ canvas-blocks/
 │   ├── development.md
 │   └── project-plan.md
 ├── skills/
-│   └── create-plan-canvas/
+│   └── visual-plan/
 │       ├── SKILL.md
 │       ├── agents/openai.yaml
 │       └── references/
@@ -138,9 +138,11 @@ canvas-blocks/
 └── README.md
 ```
 
-The `skills/create-plan-canvas/` directory is the only skill source.
+The `skills/visual-plan/` directory is the only current skill source.
 Claude Code, Codex, and skills.sh consume that same directory.
 The repository does not generate or maintain provider-specific copies.
+
+Future skills can add code explanation, pull request explanation, and other focused technical views without changing the `visual-plan` contract.
 
 ## Validate changes
 
@@ -154,7 +156,7 @@ Validate the skill frontmatter with the local skill validator:
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py \
-  skills/create-plan-canvas
+  skills/visual-plan
 ```
 
 Validate the Claude plugin and marketplace:

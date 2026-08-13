@@ -1,9 +1,9 @@
 ---
-name: create-plan-canvas
+name: visual-plan
 description: Create documented visual plans, architecture maps, API diagrams, data flows, and entity-relationship diagrams for complex product or engineering work. Use when a plan needs clear system boundaries, subsystems, external dependencies, endpoint contracts, visible table schemas, typed relationships, phased execution, clickable detail, or links to source evidence. Do not use for a trivial checklist, a quantitative chart, or a diagram that adds no information beyond the prose.
 ---
 
-# Create Plan Canvas
+# Visual Plan
 
 Create a durable Markdown plan and a small set of focused Diagram Design views.
 The plan is the source of truth.

@@ -2,16 +2,16 @@
 
 ## Purpose
 
-Canvas Blocks teaches an agent to create documented visual plans.
+Schematics teaches agents to plan and explain technical work with durable documents and focused diagrams.
 The repository distributes instructions and reference material.
 It does not run the resulting plans.
 
 ## Canonical source
 
-The canonical skill lives at `skills/create-plan-canvas/`.
+The first canonical skill lives at `skills/visual-plan/`.
 
 ```text
-skills/create-plan-canvas/
+skills/visual-plan/
 ├── SKILL.md
 ├── agents/
 │   └── openai.yaml
@@ -30,7 +30,7 @@ skills.sh and the Claude plugin consume the same canonical source.
 
 ### Agent Skills and skills.sh
 
-skills.sh discovers `skills/create-plan-canvas/SKILL.md` directly.
+skills.sh discovers `skills/visual-plan/SKILL.md` directly.
 The repository does not need a package manifest or installer.
 
 ### Claude Code
@@ -53,7 +53,7 @@ The skill uses [Diagram Design](https://github.com/cathrynlavery/diagram-design)
 Do not vendor Diagram Design or copy its reference files into this repository.
 Read its installed skill and the selected diagram-type references at execution time.
 
-This boundary keeps visual composition in one maintained project and planning semantics in Canvas Blocks.
+This boundary keeps visual composition in one maintained project and planning semantics in Schematics.
 
 ## Output contract
 

@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
-  "name": "canvas-blocks",
+  "name": "schematics",
   "version": "1.0.0",
-  "description": "Create documented visual plans with focused architecture, API, data-flow, sequence, and entity-relationship diagrams.",
+  "description": "Plan and explain technical work with durable documents and focused diagrams.",
   "author": {
     "name": "Joe Haddad",
     "url": "https://github.com/joehaddad2000"
   },
-  "homepage": "https://github.com/joehaddad2000/canvas-blocks#readme",
-  "repository": "https://github.com/joehaddad2000/canvas-blocks",
+  "homepage": "https://github.com/joehaddad2000/schematics#readme",
+  "repository": "https://github.com/joehaddad2000/schematics",
   "keywords": [
     "planning",
     "architecture",

@@ -1,4 +1,4 @@
-# Plan canvas composition
+# Visual plan composition
 
 ## Start with reader questions
 

@@ -11,7 +11,7 @@ The repository itself has no runtime dependencies and no install step.
 ## Change the skill
 
 1. Read [architecture.md](architecture.md).
-2. Read `skills/create-plan-canvas/SKILL.md` completely.
+2. Read `skills/visual-plan/SKILL.md` completely.
 3. Read each reference that the change affects.
 4. Put trigger conditions in the frontmatter `description`.
 5. Put core execution steps in `SKILL.md`.
@@ -42,13 +42,13 @@ Confirm local skills.sh discovery:
 npx skills add . --list
 ```
 
-The output must list exactly one skill named `create-plan-canvas`.
+The output must list exactly one skill named `visual-plan`.
 
 When the skill-creator validator is available, run:
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py \
-  skills/create-plan-canvas
+  skills/visual-plan
 ```
 
 Confirm that the validator accepts the name, frontmatter, and description.
@@ -68,18 +68,18 @@ Test the plugin from the local checkout when behavior changes:
 claude --plugin-dir .
 ```
 
-The plugin must expose `/canvas-blocks:create-plan-canvas`.
+The plugin must expose `/schematics:visual-plan`.
 
 ## Test a local installation
 
 Run the installation from a temporary Git repository so the smoke test does not add provider folders to this repository:
 
 ```bash
-mkdir /tmp/canvas-blocks-install-smoke
-git init -b main /tmp/canvas-blocks-install-smoke
-cd /tmp/canvas-blocks-install-smoke
-npx skills add /absolute/path/to/canvas-blocks \
-  --skill create-plan-canvas \
+mkdir /tmp/schematics-install-smoke
+git init -b main /tmp/schematics-install-smoke
+cd /tmp/schematics-install-smoke
+npx skills add /absolute/path/to/schematics \
+  --skill visual-plan \
   --agent claude-code codex \
   --copy \
   --yes

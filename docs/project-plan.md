@@ -1,11 +1,12 @@
-# Canvas Blocks project plan
+# Schematics initial skill plan
 
 **Status:** Published
 **Last updated:** 2026-08-13
 
 ## Decision
 
-Publish Canvas Blocks as one portable Agent Skill with standard skills.sh discovery and a standard Claude Code plugin marketplace.
+Publish Schematics as a portable collection of Agent Skills with standard skills.sh discovery and a standard Claude Code plugin marketplace.
+Start with one plan-focused skill named `visual-plan`.
 
 ## Context
 
@@ -20,21 +21,21 @@ Optional click-to-read detail uses native HTML anchors and CSS.
 
 The repository structure was compared with these active skill projects:
 
-| Repository | Useful pattern | Decision for Canvas Blocks |
+| Repository | Useful pattern | Decision for Schematics |
 |---|---|---|
 | [Anthropic Skills](https://github.com/anthropics/skills) | Canonical `skills/` tree plus a root Claude marketplace | Use the same canonical tree and marketplace location. |
 | [Vercel Agent Skills](https://github.com/vercel-labs/agent-skills) | Agent Skills standard with direct skills.sh installation | Use direct `npx skills add owner/repo` discovery. |
 | [Matt Pocock Skills](https://github.com/mattpocock/skills) | Explicit Claude plugin metadata for a skill collection | Use explicit metadata, but keep one skill and no collection router. |
 | [Superpowers](https://github.com/obra/superpowers) | Portable canonical skills with harness manifests | Keep one portable skill source and avoid copied provider trees. |
 | [Diagram Design](https://github.com/cathrynlavery/diagram-design) | Progressive references and standalone HTML output | Use it as the required visual composition dependency. |
-| [Impeccable](https://github.com/pbakaus/impeccable) | Canonical source with generated provider builds when provider behavior differs | Do not copy this build system because Canvas Blocks has no provider-specific runtime. |
+| [Impeccable](https://github.com/pbakaus/impeccable) | Canonical source with generated provider builds when provider behavior differs | Do not copy this build system because Schematics has no provider-specific runtime. |
 | [Caveman](https://github.com/JuliusBrussee/caveman) | Clear installation matrix and native manifests for many agents | Document skills.sh and Claude plugin commands without adding an installer. |
 
 ## Scope
 
 ### In scope
 
-- One `create-plan-canvas` skill.
+- One initial `visual-plan` skill.
 - Progressive reference files for plan format, composition, engineering diagrams, and linked detail.
 - One Codex interface metadata file inside the skill.
 - One Claude Code plugin manifest.
@@ -55,10 +56,13 @@ The repository structure was compared with these active skill projects:
 
 ## Repository model
 
-The canonical source lives at `skills/create-plan-canvas/`.
+The canonical source lives at `skills/visual-plan/`.
 skills.sh discovers this directory directly.
 Claude Code loads the same directory through the root plugin.
 Codex reads the same `SKILL.md` and its `agents/openai.yaml` sidecar.
+
+Future skills can explain code, pull requests, architecture, or other technical artifacts.
+Each skill must own one clear job and use the same canonical `skills/` tree.
 
 No synchronization step exists because no duplicate source exists.
 
@@ -71,7 +75,7 @@ The diagrams answer focused reader questions and link back to the plan for depth
 ## Verification
 
 - Validate skill frontmatter with the skill-creator validator.
-- Confirm skills.sh lists `create-plan-canvas` from the local repository.
+- Confirm skills.sh lists `visual-plan` from the local repository.
 - Validate the Claude plugin and marketplace with `claude plugin validate . --strict`.
 - Confirm the repository contains no runtime, package manifest, schema, build output, or generated application.
 - Review the README commands against installed CLI help.
