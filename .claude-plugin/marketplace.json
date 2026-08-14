@@ -5,13 +5,13 @@
     "name": "Joe Haddad"
   },
   "metadata": {
-    "description": "Visual skills for planning and explaining technical work."
+    "description": "Skills for visual planning and pull request explanation."
   },
   "plugins": [
     {
       "name": "schematics",
-      "description": "Plan and explain technical work with durable documents and focused diagrams.",
-      "version": "1.0.0",
+      "description": "Plan technical work and explain pull requests with durable documents and focused interactive views.",
+      "version": "1.1.0",
       "source": "./",
       "homepage": "https://github.com/joehaddad2000/schematics#readme",
       "repository": "https://github.com/joehaddad2000/schematics",
@@ -22,7 +22,9 @@
         "api",
         "erd",
         "diagram",
-        "documentation"
+        "documentation",
+        "pull-request",
+        "interactive"
       ]
     }
   ]

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>PR overview canvas</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="mobile-nav-button" id="mobileNavButton" type="button" aria-label="Show views">Views</button>
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">S</div>
+        <div>
+          <div class="brand-name">Schematics</div>
+          <div class="artifact-name">PR overview canvas</div>
+        </div>
+      </div>
+      <div class="title-block">
+        <div class="title-row">
+          <h1 id="prTitle">Loading overview...</h1>
+          <span class="overview-badge" id="overviewBadge"></span>
+        </div>
+        <div class="title-meta" id="titleMeta"></div>
+      </div>
+      <div class="artifact-switcher" aria-label="Artifacts">
+        <a id="recapLink" href="../pr-recap/change-map.html" hidden>Quick recap</a>
+        <span class="active">Interactive overview</span>
+      </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="search-wrap">
+        <label for="searchInput">Search the overview</label>
+        <div class="search-field">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4 4"></path></svg>
+          <input id="searchInput" type="search" placeholder="Find a node, file, route..." autocomplete="off">
+          <kbd>⌘K</kbd>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label">Overview views</div>
+        <nav class="view-nav" id="viewNav" aria-label="Overview views"></nav>
+      </div>
+
+      <div class="sidebar-section overview-summary" id="overviewSummary"></div>
+
+      <div class="sidebar-artifacts">
+        <div class="section-label">Artifacts</div>
+        <div class="sidebar-artifact-links">
+          <a id="mobileRecapLink" href="../pr-recap/change-map.html" hidden>Quick recap</a>
+          <span>Interactive overview</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="keyboard-hint"><kbd>Esc</kbd> Clear selection</div>
+        <div class="keyboard-hint"><kbd>0</kbd> Fit canvas</div>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <div class="view-header">
+        <div>
+          <div class="view-kicker" id="viewKicker"></div>
+          <h2 id="viewTitle"></h2>
+        </div>
+        <div class="view-count" id="viewCount"></div>
+      </div>
+
+      <div class="canvas-viewport" id="canvasViewport" tabindex="0" aria-label="Interactive PR overview canvas">
+        <div class="canvas-world" id="canvasWorld">
+          <svg class="edge-layer" id="edgeLayer" aria-hidden="true">
+            <defs>
+              <marker id="arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 10 5 0 10Z"></path>
+              </marker>
+              <marker id="arrow-danger" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 10 5 0 10Z"></path>
+              </marker>
+              <marker id="arrow-good" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 10 5 0 10Z"></path>
+              </marker>
+            </defs>
+          </svg>
+          <div class="node-layer" id="nodeLayer"></div>
+        </div>
+
+        <div class="canvas-help">Drag to pan · Scroll to zoom · Click a card to inspect</div>
+        <div class="canvas-controls" aria-label="Canvas controls">
+          <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
+          <button type="button" id="zoomLabel" class="zoom-label" aria-label="Reset zoom">100%</button>
+          <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+          <button type="button" id="fitCanvas" class="fit-button">Fit</button>
+        </div>
+      </div>
+    </main>
+
+    <aside class="inspector" id="inspector" aria-label="Node details" aria-hidden="true">
+      <div class="inspector-head">
+        <div>
+          <div class="inspector-kicker" id="inspectorKicker"></div>
+          <h2 id="inspectorTitle"></h2>
+        </div>
+        <button type="button" id="closeInspector" aria-label="Close inspector">×</button>
+      </div>
+      <div class="inspector-body" id="inspectorBody"></div>
+    </aside>
+  </div>
+
+  <script src="overview-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

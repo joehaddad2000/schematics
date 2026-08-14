@@ -8,10 +8,10 @@ Use Claude Code only when you need to validate or test the plugin surface.
 
 The repository itself has no runtime dependencies and no install step.
 
-## Change the skill
+## Change a skill
 
 1. Read [architecture.md](architecture.md).
-2. Read `skills/visual-plan/SKILL.md` completely.
+2. Read the affected `SKILL.md` completely.
 3. Read each reference that the change affects.
 4. Put trigger conditions in the frontmatter `description`.
 5. Put core execution steps in `SKILL.md`.
@@ -34,7 +34,7 @@ Do not create mirrored skill trees for different agents.
 Add a bundled script only when the same deterministic operation is repeatedly required and cannot be expressed reliably with standard tools.
 Add an asset only when the skill must copy that asset into its output.
 
-## Validate the skill
+## Validate the skills
 
 Confirm local skills.sh discovery:
 
@@ -42,16 +42,20 @@ Confirm local skills.sh discovery:
 npx skills add . --list
 ```
 
-The output must list exactly one skill named `visual-plan`.
+The output must list exactly three skills named `visual-plan`, `recap-pr`, and `explain-pr`.
 
 When the skill-creator validator is available, run:
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py \
   skills/visual-plan
+python3 /path/to/skill-creator/scripts/quick_validate.py \
+  skills/recap-pr
+python3 /path/to/skill-creator/scripts/quick_validate.py \
+  skills/explain-pr
 ```
 
-Confirm that the validator accepts the name, frontmatter, and description.
+Confirm that the validator accepts each name, frontmatter block, and description.
 
 ## Validate Claude Code integration
 
@@ -85,7 +89,7 @@ npx skills add /absolute/path/to/schematics \
   --yes
 ```
 
-Confirm that the installed provider directories contain the same `SKILL.md` and reference files.
+Confirm that the installed provider directories contain the same `SKILL.md`, reference files, and required assets.
 Delete the temporary directory after inspection.
 
 ## Change plugin metadata
@@ -106,8 +110,8 @@ Do not commit generated plans from unrelated projects.
 ## Completion checklist
 
 - The skill-creator validator passes when available.
-- skills.sh lists exactly one skill.
+- skills.sh lists exactly three skills.
 - Both Claude manifests pass strict validation.
 - The README commands match current local CLI help.
-- The repository contains no application or generated provider copy.
+- The repository contains no hosted application or generated provider copy.
 - `git status` contains only the intended change.

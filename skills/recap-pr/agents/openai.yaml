@@ -1,0 +1,4 @@
+interface:
+  display_name: "Recap PR"
+  short_description: "Create fast pull request recaps"
+  default_prompt: "Use $recap-pr to create a concise pull request recap and static change map."

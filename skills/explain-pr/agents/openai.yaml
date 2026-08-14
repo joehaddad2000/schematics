@@ -1,0 +1,4 @@
+interface:
+  display_name: "Explain PR"
+  short_description: "Create interactive pull request overviews"
+  default_prompt: "Use $explain-pr to explain this pull request with a neutral interactive overview."
