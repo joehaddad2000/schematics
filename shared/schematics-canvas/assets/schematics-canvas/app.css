@@ -357,6 +357,10 @@ kbd {
 .inspector-copy { margin: 0 0 13px; color: var(--muted); font-size: 12px; line-height: 1.62; }
 .inspector-section { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--rule); }
 .inspector-section h3 { margin: 0 0 10px; color: var(--muted); font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 600; letter-spacing: .10em; text-transform: uppercase; }
+.inspector-section .summary-row { align-items: flex-start; }
+.inspector-section .summary-row + .summary-row { margin-top: 8px; }
+.inspector-section .summary-row span { flex: 0 0 78px; padding-top: 1px; }
+.inspector-section .summary-row strong { min-width: 0; overflow-wrap: anywhere; line-height: 1.45; }
 .inspector-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .inspector-tags span { padding: 5px 8px; border: 1px solid var(--rule); border-radius: 4px; color: var(--muted); font-size: 9px; font-weight: 600; }
 .inspector-links { display: grid; gap: 8px; }
