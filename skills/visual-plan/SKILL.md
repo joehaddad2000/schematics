@@ -1,33 +1,35 @@
 ---
 name: visual-plan
-description: Create documented visual plans, architecture maps, API diagrams, data flows, and entity-relationship diagrams for complex product or engineering work. Use when a plan needs clear system boundaries, subsystems, external dependencies, endpoint contracts, visible table schemas, typed relationships, phased execution, clickable detail, or links to source evidence. Do not use for a trivial checklist, a quantitative chart, or a diagram that adds no information beyond the prose.
+description: Create documented visual plans with an interactive canvas of architecture, API, data-flow, sequence, or entity-relationship views. Use when a plan needs clear system boundaries, subsystems, external dependencies, endpoint contracts, visible table schemas, typed relationships, phased execution, clickable detail, or links to source evidence. Do not use for a trivial checklist, a quantitative chart, or a diagram that adds no information beyond the prose.
 ---
 
 # Visual Plan
 
-Create a durable Markdown plan and a small set of focused Diagram Design views.
+Create a durable Markdown plan and a shared interactive canvas of focused Diagram Design views.
 The plan is the source of truth.
-The diagrams help the reader scan structure, boundaries, flow, and relationships.
+The canvas helps the reader scan structure, boundaries, flow, and relationships and open detail on demand.
 
 ## Workflow
 
 1. Read [plan-format.md](references/plan-format.md) completely.
 2. Read [composition.md](references/composition.md) completely.
 3. Read [visual-grammar.md](references/visual-grammar.md) completely for architecture, API, integration, subsystem, database, or ERD work.
-4. Inspect the available source material before you state the plan.
-5. Write one sentence that states what the reader must understand or decide.
-6. Create `docs/plans/YYYY-MM-DD-<short-name>/plan.md` unless the user or repository gives another location.
-7. Complete and save the first plan draft before you load diagram-specific references.
-8. Choose the smallest sufficient diagram set and create its files under `diagrams/` one view at a time.
-9. Use the installed `$diagram-design` skill for every diagram.
-10. Read Diagram Design's `SKILL.md`, shared output rules, style guide, and the selected diagram-type reference completely.
-11. Keep scan-critical structure visible in each diagram.
-12. Put rationale, caveats, contracts, acceptance criteria, and evidence in `plan.md`.
-13. Read [linked-details.md](references/linked-details.md) only when the user needs clickable nodes or a compact inspector.
-14. Run Diagram Design's self-check on every HTML file.
-15. Inspect every view in a browser when browser access is available.
-16. Add another view only when it answers a different reader question.
-17. Revise the plan and diagrams until they agree.
+4. Read [canvas-format.md](references/canvas-format.md) completely.
+5. Inspect the available source material before you state the plan.
+6. Write one sentence that states what the reader must understand or decide.
+7. Create `docs/plans/YYYY-MM-DD-<short-name>/plan.md` unless the user or repository gives another location.
+8. Complete and save the first plan draft before you load diagram-specific references.
+9. Choose the smallest sufficient view set and create each standalone source under `views/`.
+10. Use the installed `$diagram-design` skill for every view.
+11. Read Diagram Design's `SKILL.md`, shared output rules, style guide, and the selected diagram-type reference completely.
+12. Add the Schematics embed markers and stable `data-schematic-id` attributes from the canvas format.
+13. Keep scan-critical structure visible in each view.
+14. Put rationale, caveats, contracts, acceptance criteria, and evidence in `plan.md` or inspector detail.
+15. Write `canvas-manifest.json` and run the bundled canvas builder.
+16. Run Diagram Design's self-check on every source view before the canvas build.
+17. Inspect the complete canvas and every standalone view in a browser when browser access is available.
+18. Add another view only when it answers a different reader question.
+19. Revise the plan, views, and inspector detail until they agree.
 
 ## Authoring rules
 
@@ -46,7 +48,9 @@ The diagrams help the reader scan structure, boundaries, flow, and relationships
 - Label directional connections with the artifact or action that moves across them.
 - Link claims to repository files, issues, documents, or URLs when evidence exists.
 - Do not invent status, owners, evidence, dates, or source locations.
-- Do not create a custom schema, renderer, application, server, package, or build system for the plan.
+- Use Diagram Design as the only visual renderer.
+- Use the bundled Schematics Canvas without modifying or recreating its shell files.
+- Do not add a second node, edge, coordinate, or visual-topology model to the canvas manifest.
 - Do not add a diagram when a short table or paragraph communicates the same information better.
 
 ## Quality gate
@@ -62,11 +66,13 @@ Confirm all of the following before handoff:
 - API inputs and outputs are visible or linked to exact plan sections.
 - Foreign-key lines terminate at the correct entities and show cardinality.
 - Labels do not clip or overlap at the initial browser size.
-- Optional linked detail works with a pointer and a keyboard.
+- Every marked diagram item opens the correct inspector detail with a pointer and a keyboard.
+- Clicking the diagram background clears the inspector without dimming the view.
+- Search, pan, zoom, fit, and direct standalone view links work.
 - The artifact contains no unsupported claims or decorative filler.
 
 ## Handoff
 
-Return the plan path, diagram paths, source references used, and the checks that you performed.
+Return the plan path, interactive canvas path, standalone view paths, source references used, and the checks that you performed.
 State what remains uncertain.
 Do not call the plan complete based only on file creation.

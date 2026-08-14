@@ -1,37 +1,39 @@
 # Schematics documentation
 
-This directory explains how the skill repository works and how to change it without creating a repository-hosted application runtime.
+This directory explains the skill collection, shared canvas boundary, and maintainer workflow.
 
 ## Read order
 
-1. Read [architecture.md](architecture.md) to understand the repository boundaries and canonical source.
-2. Read [development.md](development.md) before you edit a skill or manifest.
-3. Read [project-plan.md](project-plan.md) for the research baseline, completed migration, and repository completion criteria.
+1. Read [architecture.md](architecture.md) to understand the source-of-truth and distribution boundaries.
+2. Read [development.md](development.md) before you edit a skill, shared canvas resource, or manifest.
+3. Read [project-plan.md](project-plan.md) for the research baseline and product decisions.
 4. Read the affected `SKILL.md` and only the references needed for the current change.
+5. Read [canvas-format.md](../shared/schematics-canvas/references/canvas-format.md) when a change affects interactive artifacts.
 
 ## Core rule
 
-Schematics is a skill repository.
-It is not an application repository.
+Schematics is a skill repository with one reusable static canvas resource.
+It is not a hosted application repository.
 
-Do not add a repository server, package manager, build system, generated provider copy, or hosted viewer.
-`explain-pr` may own its standalone browser asset because that asset is copied into the generated overview and has no repository runtime.
+Diagram Design owns visual rendering.
+Schematics Canvas owns navigation and interaction.
+The canvas manifest must not duplicate diagram coordinates, edges, or topology.
 
 ## Documentation ownership
 
 | Document | Purpose |
 |---|---|
 | `README.md` | User-facing installation, use, structure, and validation. |
-| `docs/architecture.md` | Stable repository architecture and source-of-truth rules. |
+| `docs/architecture.md` | Stable repository and output architecture. |
 | `docs/development.md` | Maintainer workflow and validation commands. |
-| `docs/project-plan.md` | Research record, migration scope, and completion criteria. |
-| `skills/visual-plan/SKILL.md` | Visual Plan execution workflow and quality gate. |
-| `skills/visual-plan/references/*.md` | Detailed guidance loaded only when the task needs it. |
-| `skills/recap-pr/SKILL.md` | Static pull request recap workflow and review-separation rules. |
+| `docs/project-plan.md` | Research record and product decisions. |
+| `shared/schematics-canvas/references/canvas-format.md` | Shared interactive artifact contract. |
+| `skills/visual-plan/SKILL.md` | Visual Plan workflow and quality gate. |
+| `skills/visual-plan/references/*.md` | Detailed plan and engineering-diagram guidance. |
+| `skills/recap-pr/SKILL.md` | Static pull request recap workflow. |
 | `skills/recap-pr/references/*.md` | Static recap format and verification contract. |
-| `skills/explain-pr/SKILL.md` | Interactive pull request explanation workflow and evidence rules. |
-| `skills/explain-pr/references/*.md` | Interactive overview data, layout, and verification contract. |
-| `skills/explain-pr/assets/*` | Standalone browser files copied into an interactive overview. |
+| `skills/explain-pr/SKILL.md` | Interactive pull request explanation workflow. |
+| `skills/explain-pr/references/*.md` | Pull request view and evidence rules. |
 
 Keep each fact in one owning document.
-Link to that document instead of copying the same instructions into several files.
+Link to the owner instead of copying the same instructions into several files.

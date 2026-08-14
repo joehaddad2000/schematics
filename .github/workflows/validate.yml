@@ -26,3 +26,56 @@ jobs:
         run: |
           python -m json.tool .claude-plugin/plugin.json >/dev/null
           python -m json.tool .claude-plugin/marketplace.json >/dev/null
+
+      - name: Check shared canvas code
+        run: |
+          python -m py_compile shared/schematics-canvas/scripts/build_canvas.py
+          node --check shared/schematics-canvas/assets/schematics-canvas/app.js
+
+      - name: Build a canvas artifact
+        run: |
+          artifact_dir="$(mktemp -d)"
+          cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
+          python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"
+          test -f "$artifact_dir/index.html"
+          test -f "$artifact_dir/canvas-data.js"
+          node --check "$artifact_dir/app.js"
+
+      - name: Reject an incomplete canvas contract
+        run: |
+          artifact_dir="$(mktemp -d)"
+          cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
+          python - "$artifact_dir/canvas-manifest.json" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          path = pathlib.Path(sys.argv[1])
+          data = json.loads(path.read_text())
+          data["views"][0]["nodes"][0]["id"] = "missing-marker"
+          path.write_text(json.dumps(data, indent=2) + "\n")
+          PY
+          if python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"; then
+            echo "Builder accepted an inspector item without a diagram marker" >&2
+            exit 1
+          fi
+
+      - name: Check individual interactive skill installation
+        run: |
+          for skill in visual-plan explain-pr; do
+            install_dir="$(mktemp -d)"
+            git -C "$install_dir" init -b main >/dev/null
+            (
+              cd "$install_dir"
+              npx --yes skills add "$GITHUB_WORKSPACE" --skill "$skill" --agent codex --copy --yes
+            )
+            installed="$install_dir/.agents/skills/$skill"
+            test -f "$installed/assets/schematics-canvas/index.html"
+            test -f "$installed/references/canvas-format.md"
+            test -f "$installed/scripts/build_canvas.py"
+            artifact_dir="$(mktemp -d)"
+            cp -R "$GITHUB_WORKSPACE/shared/schematics-canvas/examples/minimal/." "$artifact_dir/"
+            python "$installed/scripts/build_canvas.py" "$artifact_dir/canvas-manifest.json"
+            test -f "$artifact_dir/index.html"
+            test -f "$artifact_dir/canvas-data.js"
+          done

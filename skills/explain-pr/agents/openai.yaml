@@ -1,4 +1,4 @@
 interface:
   display_name: "Explain PR"
-  short_description: "Create interactive pull request overviews"
-  default_prompt: "Use $explain-pr to explain this pull request with a neutral interactive overview."
+  short_description: "Explain pull requests with interactive diagrams"
+  default_prompt: "Use $explain-pr to explain this pull request with a neutral interactive canvas of focused Diagram Design views."

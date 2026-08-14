@@ -3,67 +3,84 @@
 ## Prerequisites
 
 Use Git for repository history.
-Use Node.js only to run the skills.sh CLI through `npx`.
-Use Claude Code only when you need to validate or test the plugin surface.
+Use Node.js only for skills.sh and JavaScript syntax checks.
+Use Python 3 for the canvas builder and skill validator.
+Use Claude Code when plugin validation or local plugin loading is required.
 
-The repository itself has no runtime dependencies and no install step.
+The repository has no dependency installation step.
 
 ## Change a skill
 
 1. Read [architecture.md](architecture.md).
 2. Read the affected `SKILL.md` completely.
-3. Read each reference that the change affects.
+3. Read each affected reference completely.
 4. Put trigger conditions in the frontmatter `description`.
 5. Put core execution steps in `SKILL.md`.
 6. Put detailed domain rules in one reference file.
 7. Keep `SKILL.md` concise and under 500 lines.
-8. Update `agents/openai.yaml` when the skill purpose or default prompt changes.
-9. Update user documentation only when installation or behavior changes.
+8. Regenerate `agents/openai.yaml` when the purpose or default prompt changes.
+9. Update user documentation when installation, output, or behavior changes.
 
 Use imperative language in skill instructions.
-Use ASD-STE100 style for plan-writing guidance.
+Use ASD-STE100 principles for plan-writing guidance.
 Preserve exact technical identifiers and examples.
+
+## Change Schematics Canvas
+
+Edit the canonical files only under `shared/schematics-canvas/`.
+Do not replace the links under `skills/visual-plan/` or `skills/explain-pr/` with copies.
+
+Preserve these boundaries:
+
+- Diagram Design renders all visible SVG topology.
+- The canvas manifest stores view metadata and inspector detail only.
+- The builder validates and packages authored artifacts.
+- The browser shell supplies interaction only.
+
+Run a plan artifact and a pull request artifact through the builder after any canvas change.
+Inspect both at desktop and narrow viewport sizes.
 
 ## Keep the repository lean
 
-Do not add a script for a check that a standard tool already performs.
 Do not add a package manifest only to run one command.
-Do not commit installed skills, build output, caches, screenshots, or generated plans used only for local testing.
-Do not create mirrored skill trees for different agents.
+Do not commit installed skills, caches, screenshots, or generated user artifacts.
+Do not create mirrored provider-specific skill trees.
 
-Add a bundled script only when the same deterministic operation is repeatedly required and cannot be expressed reliably with standard tools.
-Add an asset only when the skill must copy that asset into its output.
+Add a script only when a deterministic operation is repeatedly required.
+Add an asset only when a skill must copy it into output.
+Keep tests focused on installation, build behavior, interaction, and failure handling.
+Do not test Markdown wording, private function structure, or exact generated source formatting.
 
-## Validate the skills
-
-Confirm local skills.sh discovery:
+## Validate skill discovery
 
 ```bash
 npx skills add . --list
 ```
 
-The output must list exactly three skills named `visual-plan`, `recap-pr`, and `explain-pr`.
+The output must list exactly `visual-plan`, `recap-pr`, and `explain-pr`.
 
-When the skill-creator validator is available, run:
+## Validate skill metadata
 
 ```bash
-python3 /path/to/skill-creator/scripts/quick_validate.py \
-  skills/visual-plan
-python3 /path/to/skill-creator/scripts/quick_validate.py \
-  skills/recap-pr
-python3 /path/to/skill-creator/scripts/quick_validate.py \
-  skills/explain-pr
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/visual-plan
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/recap-pr
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/explain-pr
 ```
 
-Confirm that the validator accepts each name, frontmatter block, and description.
+## Validate shared code
+
+```bash
+python3 -m py_compile shared/schematics-canvas/scripts/build_canvas.py
+node --check shared/schematics-canvas/assets/schematics-canvas/app.js
+```
+
+Run Diagram Design's self-check on each source view before the canvas build.
+Run the canvas builder on the authored manifest.
 
 ## Validate Claude Code integration
 
-Validate each manifest directly:
-
 ```bash
-claude plugin validate .claude-plugin/plugin.json --strict
-claude plugin validate .claude-plugin/marketplace.json --strict
+claude plugin validate . --strict
 ```
 
 Test the plugin from the local checkout when behavior changes:
@@ -72,11 +89,9 @@ Test the plugin from the local checkout when behavior changes:
 claude --plugin-dir .
 ```
 
-The plugin must expose `/schematics:visual-plan`.
+## Test individual skills.sh installation
 
-## Test a local installation
-
-Run the installation from a temporary Git repository so the smoke test does not add provider folders to this repository:
+Run each install from a temporary Git repository so the smoke test does not add provider folders here:
 
 ```bash
 mkdir /tmp/schematics-install-smoke
@@ -89,29 +104,21 @@ npx skills add /absolute/path/to/schematics \
   --yes
 ```
 
-Confirm that the installed provider directories contain the same `SKILL.md`, reference files, and required assets.
-Delete the temporary directory after inspection.
+Confirm that the installed skill contains its own `assets/schematics-canvas/`, `scripts/build_canvas.py`, and `references/canvas-format.md`.
+Repeat for `explain-pr`.
 
 ## Change plugin metadata
 
-Keep these values aligned in `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`:
-
-- Plugin name.
-- Version.
-- Description.
-
+Keep the plugin name, version, and description aligned in both Claude manifests.
 Run strict Claude validation after every manifest change.
-
-## Commit policy
-
-Keep commits focused on the skill, its documentation, or its distribution metadata.
-Do not commit generated plans from unrelated projects.
 
 ## Completion checklist
 
-- The skill-creator validator passes when available.
+- The skill validator accepts all three skills.
 - skills.sh lists exactly three skills.
+- Individual installation includes the dereferenced shared resources.
+- The builder accepts valid artifacts and rejects missing diagram markers.
 - Both Claude manifests pass strict validation.
-- The README commands match current local CLI help.
-- The repository contains no hosted application or generated provider copy.
+- A plan canvas and pull request canvas pass browser interaction checks.
+- The README commands match current CLI help.
 - `git status` contains only the intended change.

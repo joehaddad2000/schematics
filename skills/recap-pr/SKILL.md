@@ -20,8 +20,10 @@ Make the recap useful before the reader opens the diff.
 8. Reuse an existing head-pinned evidence snapshot when one is available for the same PR head.
 9. Write the Markdown recap before you create the optional diagram.
 10. Use the installed `$diagram-design` skill only when the diagram materially improves understanding.
-11. Validate the recap against the reference specification.
-12. Verify all state and CI claims again immediately before handoff.
+11. Keep the optional change map standalone and static.
+12. Use `$explain-pr` when the user needs navigation, search, zoom, or clickable detail.
+13. Validate the recap against the reference specification.
+14. Verify all state and CI claims again immediately before handoff.
 
 ## Evidence rules
 

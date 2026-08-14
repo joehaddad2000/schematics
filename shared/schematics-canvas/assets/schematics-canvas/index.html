@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Schematics Canvas</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232d3142'/%3E%3Ctext x='16' y='21' fill='%23f5f5f5' font-family='Arial,sans-serif' font-size='15' font-weight='700' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="mobile-nav-button" id="mobileNavButton" type="button" aria-label="Show views">Views</button>
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">S</div>
+        <div>
+          <div class="brand-name">Schematics</div>
+          <div class="artifact-name" id="artifactLabel">Interactive canvas</div>
+        </div>
+      </div>
+      <div class="title-block">
+        <div class="title-row">
+          <h1 id="artifactTitle">Loading canvas...</h1>
+          <span class="canvas-badge" id="canvasBadge" hidden></span>
+        </div>
+        <div class="title-meta" id="titleMeta"></div>
+      </div>
+      <div class="artifact-links" id="artifactLinks" aria-label="Related artifacts"></div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="search-wrap">
+        <label for="searchInput">Search this canvas</label>
+        <div class="search-field">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"></circle><path d="m13 13 4 4"></path></svg>
+          <input id="searchInput" type="search" placeholder="Find a component, route, table..." autocomplete="off">
+          <kbd>⌘K</kbd>
+        </div>
+        <div class="search-results" id="searchResults" hidden></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="section-label" id="viewsLabel">Views</div>
+        <nav class="view-nav" id="viewNav" aria-label="Canvas views"></nav>
+      </div>
+
+      <div class="sidebar-section canvas-summary" id="canvasSummary"></div>
+
+      <div class="sidebar-footer">
+        <div class="keyboard-hint"><kbd>Esc</kbd> Clear selection</div>
+        <div class="keyboard-hint"><kbd>0</kbd> Fit view</div>
+      </div>
+    </aside>
+
+    <button class="mobile-backdrop" id="mobileBackdrop" type="button" aria-label="Close views"></button>
+
+    <main class="workspace">
+      <div class="view-header">
+        <div>
+          <div class="view-kicker" id="viewKicker"></div>
+          <h2 id="viewTitle"></h2>
+        </div>
+        <a class="view-source" id="viewSource" target="_blank" rel="noreferrer">Open diagram</a>
+      </div>
+
+      <div class="canvas-viewport" id="canvasViewport" tabindex="0" aria-label="Interactive technical canvas">
+        <div class="canvas-world" id="canvasWorld">
+          <iframe
+            id="diagramFrame"
+            class="diagram-frame"
+            title="Technical diagram"
+            sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+          ></iframe>
+        </div>
+
+        <div class="canvas-help">Drag to pan · Scroll to zoom · Select a diagram item to inspect</div>
+        <div class="canvas-controls" aria-label="Canvas controls">
+          <button type="button" id="zoomOut" aria-label="Zoom out">−</button>
+          <button type="button" id="zoomLabel" class="zoom-label" aria-label="Reset zoom">100%</button>
+          <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+          <button type="button" id="fitCanvas" class="fit-button">Fit</button>
+        </div>
+      </div>
+    </main>
+
+    <aside class="inspector" id="inspector" aria-label="Item details" aria-hidden="true">
+      <div class="inspector-head">
+        <div>
+          <div class="inspector-kicker" id="inspectorKicker"></div>
+          <h2 id="inspectorTitle"></h2>
+        </div>
+        <button type="button" id="closeInspector" aria-label="Close inspector">×</button>
+      </div>
+      <div class="inspector-body" id="inspectorBody"></div>
+    </aside>
+  </div>
+
+  <script src="canvas-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

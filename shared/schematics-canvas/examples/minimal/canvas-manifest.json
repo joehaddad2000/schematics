@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "title": "Order path",
+    "artifactLabel": "Interactive example",
+    "subtitle": "Minimal build fixture",
+    "summary": [
+      { "label": "Views", "value": "1" }
+    ]
+  },
+  "views": [
+    {
+      "id": "request-path",
+      "label": "Request path",
+      "question": "How does an order reach durable storage?",
+      "source": "views/request-path.html",
+      "nodes": [
+        {
+          "id": "order-api",
+          "kind": "api",
+          "title": "Order API",
+          "summary": "Accepts the order request."
+        },
+        {
+          "id": "order-store",
+          "kind": "store",
+          "title": "Order store",
+          "summary": "Keeps accepted orders."
+        }
+      ]
+    }
+  ]
+}

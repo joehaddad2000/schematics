@@ -2,41 +2,56 @@
 
 ## Purpose
 
-Schematics teaches agents to plan and explain technical work with durable documents and focused diagrams.
-The repository distributes instructions and reference material.
-It does not run the resulting plans.
+Schematics teaches agents to plan and explain technical work with durable documents and focused technical views.
+It distributes three Agent Skills and one shared static interaction shell.
+
+## Product boundary
+
+Schematics has two visual layers with separate ownership:
+
+| Layer | Owner | Responsibility |
+|---|---|---|
+| Diagram view | Diagram Design | SVG structure, node forms, layout, connectors, typography, and visual QA. |
+| Interactive shell | Schematics Canvas | View navigation, search, pan, zoom, selection, inspector detail, and artifact links. |
+
+Do not draw nodes or edges in Schematics Canvas.
+Do not add canvas navigation or a second inspector inside a Diagram Design view.
 
 ## Canonical source
 
-Each canonical skill lives in its own directory under `skills/`.
+Each user-facing skill lives under `skills/`.
 
 ```text
 skills/
 ├── explain-pr/
-│   ├── SKILL.md
-│   ├── agents/openai.yaml
-│   ├── assets/overview-canvas/
-│   └── references/overview-format.md
 ├── recap-pr/
-│   ├── SKILL.md
-│   ├── agents/openai.yaml
-│   └── references/recap-format.md
 └── visual-plan/
-    ├── SKILL.md
-    ├── agents/openai.yaml
-    └── references/
 ```
 
-Edit the owning skill directory directly.
-Do not generate copies under `.claude/`, `.agents/`, `.codex/`, or another provider directory.
-skills.sh and the Claude plugin consume the same canonical source.
+The shared canvas source lives once under `shared/schematics-canvas/`.
+
+```text
+shared/schematics-canvas/
+├── assets/schematics-canvas/
+│   ├── index.html
+│   ├── app.css
+│   └── app.js
+├── references/canvas-format.md
+└── scripts/build_canvas.py
+```
+
+`visual-plan` and `explain-pr` contain repository-relative links to the shared asset, reference, and builder.
+The links resolve inside the Claude plugin root.
+skills.sh dereferences them when it copies one skill so the installed skill is self-contained.
+
+Do not create hand-maintained copies of the shared canvas under each skill.
 
 ## Distribution surfaces
 
-### Agent Skills and skills.sh
+### skills.sh and Agent Skills
 
 skills.sh discovers each `skills/*/SKILL.md` directly.
-The repository does not need a package manifest or installer.
+The repository does not need a package manifest or custom installer.
 
 ### Claude Code
 
@@ -44,76 +59,56 @@ The repository does not need a package manifest or installer.
 `.claude-plugin/marketplace.json` makes the repository a Claude marketplace.
 Claude Code discovers the canonical `skills/` directory at the plugin root.
 
-Keep the version and description aligned in both manifests.
-
 ### Codex
 
 Codex reads the standard `SKILL.md` through skills.sh installation.
 `agents/openai.yaml` supplies optional Codex interface metadata.
-Each sidecar describes its owning skill without copying the skill instructions.
 
 ## External dependency
 
-`visual-plan` and the optional `recap-pr` change map use [Diagram Design](https://github.com/cathrynlavery/diagram-design) to create standalone HTML and SVG diagrams.
-Do not vendor Diagram Design or copy its reference files into this repository.
-Read its installed skill and the selected diagram-type references at execution time.
+All technical views use [Diagram Design](https://github.com/cathrynlavery/diagram-design).
+Do not vendor Diagram Design or copy its references into this repository.
+Read its installed skill and selected type references during artifact authoring.
 
-This boundary keeps visual composition in one maintained project and planning semantics in Schematics.
+This keeps visual composition in one maintained project and planning or explanation semantics in Schematics.
 
-`explain-pr` uses its own small standalone browser asset because interactive search, focus, inspection, pan, zoom, and fit are part of that skill's output contract.
-The asset is copied into the output directory and receives one PR-specific `overview-data.js` file.
-It does not create a repository server or hosted application.
+## Interactive artifact contract
 
-## Visual Plan output contract
+The author writes `canvas-manifest.json` and standalone Diagram Design files under `views/`.
+Each interactive SVG group has one stable `data-schematic-id`.
+The manifest gives that ID its inspector text and source links.
 
-The plan document is the source of truth.
-Diagrams are companion views.
+The builder validates the mapping, extracts each marked SVG, and creates `canvas-data.js`.
+The generated shell remains static and works without a repository server or framework.
 
-```text
-docs/plans/YYYY-MM-DD-<short-name>/
-├── plan.md
-└── diagrams/
-    └── <focused-view>.html
-```
+The standalone Diagram Design files remain available beside the canvas.
+The shell loads embedded SVG documents from `canvas-data.js` so local file viewing does not require cross-file fetch access.
 
-The plan owns context, scope, decisions, interfaces, execution, verification, risks, and sources.
-Each diagram answers one reader question.
+## Skill output contracts
 
-Optional click-to-read detail stays inside the standalone HTML file.
-It uses native anchors and CSS `:target` by default.
-It does not require JavaScript, a server, or a framework.
+`visual-plan` creates a Markdown plan, an interactive canvas, and standalone views.
+The plan remains the source of truth.
 
-## Pull request output contracts
+`recap-pr` creates a Markdown recap and at most one optional static Diagram Design map.
+It stays optimized for quick handoff or attachment.
 
-`recap-pr` creates `recap.md` and at most one optional static change map by default.
-It is designed for fast author handoff or attachment.
-
-`explain-pr` creates a multi-view standalone browser overview.
-It uses distinct node forms for systems, services, APIs, stores, tables, flows, decisions, and evidence.
+`explain-pr` creates a multi-view interactive canvas.
 It keeps defects, severity, and merge recommendations outside the artifact.
-
-Both pull request skills pin evidence to the current head when possible.
-They separate CI state, local verification, and rollout state.
 
 ## Progressive disclosure
 
-Each `SKILL.md` contains the execution path and non-negotiable quality rules.
-Reference files contain detailed guidance that the agent reads only when needed.
+Each `SKILL.md` contains its execution path and non-negotiable rules.
+Reference files contain details that load only when needed.
 
-- Read `plan-format.md` for every use.
-- Read `composition.md` for every use.
-- Read `visual-grammar.md` for engineering diagrams.
-- Read `linked-details.md` only when the output needs selectable nodes.
-
-Do not duplicate full reference content in `SKILL.md`.
+The shared canvas format is linked into both interactive skills so one canonical contract governs the shell.
 
 ## Explicit non-goals
 
-- No repository-hosted canvas application.
+- No repository-hosted viewer.
 - No React components.
-- No semantic JSON schema.
-- No repository-hosted renderer or development server.
-- No repository CLI.
+- No node or edge renderer in Schematics Canvas.
+- No duplicate visual-topology schema.
+- No development server.
 - No package manager.
-- No generated distribution tree.
-- No provider-specific instruction fork.
+- No generated provider-specific skill tree.
+- No vendored Diagram Design copy.

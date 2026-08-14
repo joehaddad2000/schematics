@@ -1,0 +1,1 @@
+../../../shared/schematics-canvas/references/canvas-format.md

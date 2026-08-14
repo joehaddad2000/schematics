@@ -7,14 +7,20 @@ Use this layout unless the user or repository provides another convention:
 ```text
 docs/plans/YYYY-MM-DD-<short-name>/
 ├── plan.md
-└── diagrams/
+├── index.html
+├── app.css
+├── app.js
+├── canvas-data.js
+├── canvas-manifest.json
+└── views/
     ├── system-overview.html
     ├── api-surface.html
     └── relational-model.html
 ```
 
-Create only the diagrams that the plan needs.
-Use relative links from `plan.md` to each diagram.
+Create only the views that the plan needs.
+Use a relative link from `plan.md` to `index.html` as the primary visual artifact.
+Link each standalone view only when a reader benefits from opening it outside the canvas.
 
 ## Required plan structure
 
@@ -48,12 +54,12 @@ State the current condition, problem, evidence, and important constraints.
 ## System model
 
 Describe boundaries, internal subsystems, external systems, and important flows.
-Link the system overview when one exists.
+Link the interactive canvas when one exists.
 
 ## Interfaces and data
 
 Describe changed APIs, events, stored data, and compatibility rules.
-Link API, data-flow, or ER diagrams when they exist.
+Name the canvas views that explain the API, data flow, or relational model.
 
 ## Execution plan
 
@@ -101,5 +107,5 @@ Keep implementation code out of the plan unless exact code is necessary to remov
 
 Give each important component, endpoint family, table, decision, and risk one stable term.
 Use that same term in the plan and every diagram.
-Link from the plan section to the diagram that explains it.
-When linked details exist in an HTML diagram, make their headings match plan headings.
+Link from the plan section to the canvas view that explains it.
+Make inspector titles and plan headings use the same stable terms.

@@ -1,0 +1,1 @@
+../../../shared/schematics-canvas/scripts/build_canvas.py

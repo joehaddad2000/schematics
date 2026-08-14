@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "schematics",
-  "version": "1.1.0",
-  "description": "Plan technical work and explain pull requests with durable documents and focused interactive views.",
+  "version": "1.2.0",
+  "description": "Create visual plans, pull request recaps, and interactive pull request explanations with one shared canvas.",
   "author": {
     "name": "Joe Haddad",
     "url": "https://github.com/joehaddad2000"
