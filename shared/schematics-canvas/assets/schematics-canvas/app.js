@@ -10,6 +10,7 @@
   const MIN_SCALE = 0.28;
   const MAX_SCALE = 2.2;
   const SVG_NS = "http://www.w3.org/2000/svg";
+  const linkAliases = Object.entries(data.meta.linkBases ?? {}).sort(([left], [right]) => right.length - left.length);
 
   const elements = {
     artifactLabel: document.getElementById("artifactLabel"),
@@ -53,7 +54,6 @@
     dragStartY: 0,
     panStartX: 0,
     panStartY: 0,
-    pendingNodeId: null,
   };
 
   function escapeHtml(value) {
@@ -70,13 +70,12 @@
   }
 
   function nodeById(id, view = currentView()) {
-    return (view.nodes ?? []).find((node) => node.id === id) ?? null;
+    return view.nodes.find((node) => node.id === id) ?? null;
   }
 
   function linkHref(link) {
     const href = String(link.href ?? "");
-    const aliases = Object.entries(data.meta.linkBases ?? {}).sort(([left], [right]) => right.length - left.length);
-    for (const [alias, baseValue] of aliases) {
+    for (const [alias, baseValue] of linkAliases) {
       const base = String(baseValue);
       if (href === alias) return base;
       if (href.startsWith(`${alias}/`)) return `${base.replace(/\/$/, "")}/${href.slice(alias.length + 1)}`;
@@ -127,7 +126,7 @@
       button.innerHTML = `
         <span class="view-index">${String(index + 1).padStart(2, "0")}</span>
         <span class="view-copy"><strong>${escapeHtml(view.label)}</strong><span>${escapeHtml(view.question)}</span></span>
-        <span class="view-node-count">${(view.nodes ?? []).length}</span>
+        <span class="view-node-count">${view.nodes.length}</span>
       `;
       button.addEventListener("click", () => switchView(view.id));
       elements.viewNav.append(button);
@@ -218,8 +217,11 @@
     transformFrame = requestAnimationFrame(() => {
       transformFrame = undefined;
       elements.canvasWorld.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
-      elements.zoomLabel.textContent = `${Math.round(state.scale * 100)}%`;
     });
+  }
+
+  function updateZoomLabel() {
+    elements.zoomLabel.textContent = `${Math.round(state.scale * 100)}%`;
   }
 
   function setScale(nextScale, anchorX, anchorY, viewportRect) {
@@ -231,6 +233,7 @@
     state.scale = clampScale(nextScale);
     state.panX = localX - worldX * state.scale;
     state.panY = localY - worldY * state.scale;
+    updateZoomLabel();
     applyTransform();
   }
 
@@ -248,6 +251,7 @@
       ? 16
       : (rect.width - view.width * state.scale) / 2;
     state.panY = paddingTop;
+    updateZoomLabel();
     applyTransform();
   }
 
@@ -287,7 +291,7 @@
     setScale(state.scale * Math.exp(-event.deltaY * 0.0012), anchorX, anchorY, viewportRect);
   }
 
-  function setupFrame(view) {
+  function setupFrame(view, selectedNodeId) {
     const doc = frameDocument();
     if (!doc) return;
     const targets = doc.querySelectorAll("[data-schematic-id]");
@@ -324,39 +328,33 @@
     doc.addEventListener("pointerup", endDrag);
     doc.addEventListener("pointercancel", endDrag);
     requestAnimationFrame(() => fitView({ readableOnNarrow: true }));
-    if (state.pendingNodeId) {
-      const pendingNodeId = state.pendingNodeId;
-      state.pendingNodeId = null;
-      requestAnimationFrame(() => selectNode(pendingNodeId));
-    }
+    if (selectedNodeId) requestAnimationFrame(() => selectNode(selectedNodeId));
   }
 
-  function renderView() {
+  function renderView(selectedNodeId = null) {
     const view = currentView();
     elements.viewKicker.textContent = view.label;
     elements.viewTitle.textContent = view.question;
-    elements.viewSource.href = view.sourceHref;
+    elements.viewSource.href = view.source;
     elements.diagramFrame.title = view.question;
     elements.diagramFrame.style.width = `${view.width}px`;
     elements.diagramFrame.style.height = `${view.height}px`;
     elements.canvasWorld.style.width = `${view.width}px`;
     elements.canvasWorld.style.height = `${view.height}px`;
-    elements.diagramFrame.onload = () => setupFrame(view);
+    elements.diagramFrame.onload = () => setupFrame(view, selectedNodeId);
     elements.diagramFrame.srcdoc = view.html;
     renderNavigation();
     clearSelection();
   }
 
   function switchView(viewId, nodeId = null) {
-    if (!data.views.some((view) => view.id === viewId)) return;
     state.viewId = viewId;
-    state.pendingNodeId = nodeId;
     elements.sidebar.classList.remove("open");
-    renderView();
+    renderView(nodeId);
   }
 
   const indexedNodes = data.views.flatMap((view) =>
-    (view.nodes ?? []).map((node) => ({
+    view.nodes.map((node) => ({
       view,
       node,
       text: JSON.stringify(node).toLowerCase(),

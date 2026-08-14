@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import shutil
@@ -118,12 +119,7 @@ def extract_styles(source_html: str) -> str:
 
 def embedded_document(source_html: str, fragment: str, title: str) -> str:
     styles = extract_styles(source_html)
-    safe_title = (
-        title.replace("&", "&amp;")
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-        .replace('"', "&quot;")
-    )
+    safe_title = html.escape(title)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -148,7 +144,7 @@ def embedded_document(source_html: str, fragment: str, title: str) -> str:
 def build_view(view_value: object, index: int, manifest_dir: Path) -> dict:
     location = f"views[{index}]"
     view = require_object(view_value, location).copy()
-    view_id = require_id(view.get("id"), f"{location}.id")
+    require_id(view.get("id"), f"{location}.id")
     require_string(view.get("label"), f"{location}.label")
     question = require_string(view.get("question"), f"{location}.question")
     source_path = resolve_source(manifest_dir, view.get("source"), f"{location}.source")
@@ -160,7 +156,7 @@ def build_view(view_value: object, index: int, manifest_dir: Path) -> dict:
     node_ids: list[str] = []
     for node_index, node_value in enumerate(nodes_value):
         node_location = f"{location}.nodes[{node_index}]"
-        node = require_object(node_value, node_location).copy()
+        node = require_object(node_value, node_location)
         node_id = require_id(node.get("id"), f"{node_location}.id")
         require_string(node.get("title"), f"{node_location}.title")
         require_string(node.get("kind"), f"{node_location}.kind")
@@ -187,8 +183,7 @@ def build_view(view_value: object, index: int, manifest_dir: Path) -> dict:
     view["width"] = width
     view["height"] = height
     view["html"] = embedded_document(source_html, fragment, question)
-    view["sourceHref"] = source_path.relative_to(manifest_dir).as_posix()
-    view["id"] = view_id
+    view["source"] = source_path.relative_to(manifest_dir).as_posix()
     return view
 
 
@@ -203,10 +198,9 @@ def build(manifest_path: Path) -> Path:
         raise CanvasBuildError(f"Invalid JSON at line {error.lineno}, column {error.colno}: {error.msg}") from error
 
     manifest = require_object(manifest_value, "manifest").copy()
-    meta = require_object(manifest.get("meta"), "meta").copy()
+    meta = require_object(manifest.get("meta"), "meta")
     require_string(meta.get("title"), "meta.title")
     require_string(meta.get("artifactLabel"), "meta.artifactLabel")
-    manifest["meta"] = meta
 
     views_value = manifest.get("views")
     if not isinstance(views_value, list) or not views_value:

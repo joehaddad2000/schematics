@@ -65,10 +65,7 @@ Confirm all of the following before handoff:
 - External systems do not look internal.
 - API inputs and outputs are visible or linked to exact plan sections.
 - Foreign-key lines terminate at the correct entities and show cardinality.
-- Labels do not clip or overlap at the initial browser size.
-- Every marked diagram item opens the correct inspector detail with a pointer and a keyboard.
-- Clicking the diagram background clears the inspector without dimming the view.
-- Search, pan, zoom, fit, and direct standalone view links work.
+- The artifact satisfies every build and interaction check in `references/canvas-format.md`.
 - The artifact contains no unsupported claims or decorative filler.
 
 ## Handoff

@@ -91,8 +91,5 @@ Confirm all of the following before handoff:
 - CI, local verification, and rollout state remain separate.
 - No finding, severity, recommendation, or review conclusion appears in the canvas.
 - Every source view passes Diagram Design's self-check and visual inspection.
-- Every marked item has matching inspector detail.
-- Every view is readable at 1280 by 900 and 520 by 700.
-- View switching, search, node selection, inspector links, pan, zoom, fit, background deselection, and keyboard access work.
-- Essential information does not depend on hover.
+- The artifact satisfies every build and interaction check in `references/canvas-format.md`.
 - Explanatory copy uses short direct sentences and ASD-STE100 principles when practical.
