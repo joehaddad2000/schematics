@@ -4,7 +4,7 @@
     "artifactLabel": "Interactive example",
     "subtitle": "Minimal build fixture",
     "summary": [
-      { "label": "Views", "value": "1" }
+      { "label": "Views", "value": "2" }
     ]
   },
   "views": [
@@ -25,6 +25,26 @@
           "kind": "store",
           "title": "Order store",
           "summary": "Keeps accepted orders."
+        }
+      ]
+    },
+    {
+      "id": "api-internals",
+      "label": "API internals",
+      "question": "What happens inside the Order API?",
+      "source": "views/api-internals.html",
+      "nodes": [
+        {
+          "id": "order-handler",
+          "kind": "component",
+          "title": "Order handler",
+          "summary": "Validates and accepts the order command."
+        },
+        {
+          "id": "idempotency-policy",
+          "kind": "policy",
+          "title": "Idempotency policy",
+          "summary": "Prevents duplicate order creation."
         }
       ]
     }

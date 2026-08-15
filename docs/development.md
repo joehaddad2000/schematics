@@ -28,7 +28,7 @@ Preserve exact technical identifiers and examples.
 ## Change Schematics Canvas
 
 Edit the canonical files only under `shared/schematics-canvas/`.
-Do not replace the links under `skills/visual-plan/` or `skills/explain-pr/` with copies.
+Do not replace the links under `skills/visual-plan/`, `skills/map-codebase/`, or `skills/explain-pr/` with copies.
 
 Preserve these boundaries:
 
@@ -37,8 +37,8 @@ Preserve these boundaries:
 - The builder validates and packages authored artifacts.
 - The browser shell supplies interaction only.
 
-Run a plan artifact and a pull request artifact through the builder after any canvas change.
-Inspect both at desktop and narrow viewport sizes.
+Run a plan artifact, a codebase artifact, and a pull request artifact through the builder after any canvas change.
+Inspect all three at desktop and narrow viewport sizes.
 
 ## Keep the repository lean
 
@@ -57,12 +57,13 @@ Do not test Markdown wording, private function structure, or exact generated sou
 npx skills add . --list
 ```
 
-The output must list exactly `visual-plan`, `recap-pr`, and `explain-pr`.
+The output must list exactly `visual-plan`, `map-codebase`, `recap-pr`, and `explain-pr`.
 
 ## Validate skill metadata
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/visual-plan
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/map-codebase
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/recap-pr
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/explain-pr
 ```
@@ -105,7 +106,7 @@ npx skills add /absolute/path/to/schematics \
 ```
 
 Confirm that the installed skill contains its own `assets/schematics-canvas/`, `scripts/build_canvas.py`, and `references/canvas-format.md`.
-Repeat for `explain-pr`.
+Repeat for `map-codebase` and `explain-pr`.
 
 ## Change plugin metadata
 
@@ -114,11 +115,11 @@ Run strict Claude validation after every manifest change.
 
 ## Completion checklist
 
-- The skill validator accepts all three skills.
-- skills.sh lists exactly three skills.
+- The skill validator accepts all four skills.
+- skills.sh lists exactly four skills.
 - Individual installation includes the dereferenced shared resources.
 - The builder accepts valid artifacts and rejects missing diagram markers.
 - Both Claude manifests pass strict validation.
-- A plan canvas and pull request canvas pass browser interaction checks.
+- A plan canvas, codebase canvas, and pull request canvas pass browser interaction checks.
 - The README commands match current CLI help.
 - `git status` contains only the intended change.

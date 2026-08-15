@@ -1,13 +1,13 @@
 # Schematics skill collection plan
 
 **Status:** Unified canvas implemented
-**Last updated:** 2026-08-14
+**Last updated:** 2026-08-15
 
 ## Decision
 
-Publish Schematics as three focused Agent Skills with one shared interactive canvas contract.
+Publish Schematics as four focused Agent Skills with one shared interactive canvas contract.
 Use Diagram Design as the only visual renderer.
-Use Schematics Canvas as the common interaction shell for visual plans and full pull request explanations.
+Use Schematics Canvas as the common interaction shell for visual plans, codebase maps, and full pull request explanations.
 Keep the quick pull request recap static.
 
 ## Current skills
@@ -15,11 +15,13 @@ Keep the quick pull request recap static.
 | Skill | Job | Output |
 |---|---|---|
 | `visual-plan` | Plan complex technical work. | Markdown plan plus an interactive canvas of standalone Diagram Design views. |
+| `map-codebase` | Map a codebase or scoped subsystem as a system. | Hierarchical interactive canvas with source-backed drill-down views. |
 | `recap-pr` | Create a fast pull request handoff. | Markdown recap plus an optional static change map. |
 | `explain-pr` | Explain a large pull request interactively. | Interactive canvas of standalone Diagram Design views. |
 
 The pull request skills are explanation tools, not code-review tools.
 Possible defects stay in chat unless the user requests a separate review artifact.
+Codebase maps follow the same separation from review and future-state planning.
 
 ## Product evolution
 
@@ -33,6 +35,7 @@ The unified model keeps the useful boundaries from both experiments:
 
 - Diagram Design creates every visible technical diagram.
 - Schematics Canvas provides one reusable interactive reading surface.
+- Explicit drill-down actions connect system, subsystem, and focused views.
 - The manifest stores only navigation metadata and inspector detail.
 - The Markdown plan or recap remains the durable prose artifact.
 
@@ -75,6 +78,7 @@ This preserves local-file compatibility and keeps the original standalone views 
 
 - Do not restore the old React application.
 - Do not add canvas-owned nodes, edges, coordinates, or automatic layout.
+- Do not turn a codebase map into a raw file or import graph.
 - Do not turn `recap-pr` into a full interactive overview.
 - Do not vendor Diagram Design.
 - Do not add a package manager or development server.
@@ -82,13 +86,13 @@ This preserves local-file compatibility and keeps the original standalone views 
 ## Verification
 
 - Validate all skill frontmatter.
-- Confirm skills.sh lists the three public skills.
+- Confirm skills.sh lists the four public skills.
 - Confirm individual skill installation includes shared canvas resources.
 - Validate the builder with valid and invalid marked diagrams.
 - Validate the Claude plugin and marketplace.
-- Inspect a complex plan canvas and pull request canvas in the browser.
+- Inspect a complex plan canvas, codebase canvas, and pull request canvas in the browser.
 - Verify pointer and keyboard selection, background clearing, search, pan, zoom, fit, and narrow layout.
 
 ## Exit condition
 
-The unified canvas work is complete when both interactive skills create the same shell around Diagram Design views, the quick recap remains static, installation remains portable, and all validation and browser checks pass.
+The unified canvas work is complete when all three interactive skills create the same shell around Diagram Design views, hierarchical navigation works, the quick recap remains static, installation remains portable, and all validation and browser checks pass.

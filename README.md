@@ -2,9 +2,10 @@
 
 Schematics is a collection of agent skills for planning and explaining technical work with durable documents and interactive technical views.
 
-The repository ships three focused skills:
+The repository ships four focused skills:
 
 - `visual-plan` creates a Markdown engineering plan and an interactive canvas of architecture, API, data-flow, sequence, or entity-relationship views.
+- `map-codebase` creates an evidence-backed interactive map of a codebase or scoped subsystem with drill-down views.
 - `recap-pr` creates a concise Markdown pull request recap and an optional static change map.
 - `explain-pr` creates a neutral interactive pull request overview with clickable system, lifecycle, data, rollout, and evidence views.
 
@@ -37,6 +38,27 @@ docs/plans/YYYY-MM-DD-<short-name>/
 `plan.md` is the source of truth.
 `index.html` is the primary interactive reading surface.
 Each file under `views/` is also a valid standalone Diagram Design artifact.
+
+### Map Codebase
+
+The codebase map uses a hierarchical interactive canvas:
+
+```text
+docs/codebase/<short-scope>/
+├── index.html
+├── app.css
+├── app.js
+├── canvas-data.js
+├── canvas-manifest.json
+└── views/
+    ├── system-landscape.html
+    ├── subsystem-map.html
+    └── runtime-flow.html
+```
+
+The first view shows the current system boundary.
+Visible drill-down actions inside overview boxes open focused subsystem, runtime, API, or data views.
+The box body remains selectable for inspector detail.
 
 ### Recap PR
 
@@ -87,6 +109,7 @@ Install one focused skill when required:
 
 ```bash
 npx skills add joehaddad2000/schematics --skill visual-plan
+npx skills add joehaddad2000/schematics --skill map-codebase
 npx skills add joehaddad2000/schematics --skill recap-pr
 npx skills add joehaddad2000/schematics --skill explain-pr
 ```
@@ -126,7 +149,7 @@ claude plugin install schematics@schematics
 
 Use `claude plugin marketplace add .` when testing the current checkout.
 
-Claude Code exposes `/schematics:visual-plan`, `/schematics:recap-pr`, and `/schematics:explain-pr`.
+Claude Code exposes `/schematics:visual-plan`, `/schematics:map-codebase`, `/schematics:recap-pr`, and `/schematics:explain-pr`.
 Claude can also invoke each skill automatically when a request matches its description.
 
 ## Use the skills
@@ -136,6 +159,13 @@ Create an interactive engineering plan:
 ```text
 Use $visual-plan to plan a new checkout frontend, public API, order backend, and relational data model.
 Show internal and external systems, API inputs and outputs, and a real ERD.
+```
+
+Map a codebase or one subsystem:
+
+```text
+Use $map-codebase to map this repository as a system.
+Show internal and external boundaries, the primary runtime path, and drill-down views for important subsystems.
 ```
 
 Create a quick pull request handoff:
@@ -164,6 +194,7 @@ The bundled builder then:
 
 The manifest does not contain coordinates, edges, or visual topology.
 Diagram Design remains the only source of visual structure.
+Nested `data-schematic-view` actions connect overview boxes to focused views without replacing inspector selection.
 
 The complete contract is in [Schematics Canvas format](shared/schematics-canvas/references/canvas-format.md).
 
@@ -171,7 +202,8 @@ The complete contract is in [Schematics Canvas format](shared/schematics-canvas/
 
 - Write the plan or explanation before polishing its views.
 - State the decision or outcome before implementation mechanics.
-- Use one to four focused views instead of one large diagram.
+- Use a small set of focused views instead of one large diagram.
+- Use explicit drill-down actions when an overview boundary has a focused subsystem, flow, API, or data view.
 - Use different visual forms for tables, services, frontends, external systems, streams, stores, decisions, and notes.
 - Draw real table rows, keys, foreign keys, and cardinality for an ERD.
 - Use one compact API surface with route rows unless topology requires separate endpoint nodes.
@@ -180,6 +212,7 @@ The complete contract is in [Schematics Canvas format](shared/schematics-canvas/
 - Preserve exact technical identifiers.
 - Do not add a second renderer, node schema, edge schema, or coordinate model.
 - Keep pull request explanation artifacts descriptive and neutral.
+- Keep codebase maps descriptive, source-backed, and separate from code review.
 - Pin pull request source links to the current head SHA when possible.
 - Separate CI state, local verification, and rollout state.
 
@@ -197,6 +230,7 @@ schematics/
 │       └── scripts/build_canvas.py
 ├── skills/
 │   ├── explain-pr/
+│   ├── map-codebase/
 │   ├── recap-pr/
 │   └── visual-plan/
 ├── .gitignore
@@ -204,7 +238,7 @@ schematics/
 ```
 
 Each user-facing skill remains canonical under `skills/`.
-The two interactive skills link to one canonical canvas resource under `shared/`.
+The three interactive skills link to one canonical canvas resource under `shared/`.
 skills.sh dereferences those internal links when it copies an individual skill, so each installed skill remains self-contained.
 
 ## Validate changes
@@ -219,6 +253,7 @@ Validate each skill:
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/visual-plan
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/map-codebase
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/recap-pr
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/explain-pr
 ```
