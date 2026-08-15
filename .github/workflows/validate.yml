@@ -60,9 +60,51 @@ jobs:
             exit 1
           fi
 
+      - name: Reject an unknown drill-down target
+        run: |
+          artifact_dir="$(mktemp -d)"
+          cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
+          python - "$artifact_dir/views/request-path.html" <<'PY'
+          import pathlib
+          import sys
+
+          path = pathlib.Path(sys.argv[1])
+          path.write_text(
+              path.read_text().replace(
+                  'data-schematic-view="api-internals"',
+                  'data-schematic-view="missing-view"',
+              )
+          )
+          PY
+          if python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"; then
+            echo "Builder accepted an unknown drill-down target" >&2
+            exit 1
+          fi
+
+      - name: Reject an invalid drill-down target
+        run: |
+          artifact_dir="$(mktemp -d)"
+          cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
+          python - "$artifact_dir/views/request-path.html" <<'PY'
+          import pathlib
+          import sys
+
+          path = pathlib.Path(sys.argv[1])
+          path.write_text(
+              path.read_text().replace(
+                  'data-schematic-view="api-internals"',
+                  'data-schematic-view=""',
+              )
+          )
+          PY
+          if python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"; then
+            echo "Builder accepted an empty drill-down target" >&2
+            exit 1
+          fi
+
       - name: Check individual interactive skill installation
         run: |
-          for skill in visual-plan explain-pr; do
+          for skill in visual-plan explain-codebase explain-pr; do
             install_dir="$(mktemp -d)"
             git -C "$install_dir" init -b main >/dev/null
             (

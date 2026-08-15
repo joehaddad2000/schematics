@@ -64,6 +64,28 @@ Do not mark labels, legends, boundaries, or decorative shapes that have no addit
 Do not add a second click-to-read implementation inside the Diagram Design file.
 Schematics Canvas supplies the inspector.
 
+## Drill-down contract
+
+Use an explicit nested action when a diagram item opens a more detailed canvas view.
+Keep the parent item selectable so the reader can still open its inspector detail.
+
+```html
+<g data-schematic-id="order-service">
+  <!-- service node -->
+  <g data-schematic-view="order-internals">
+    <!-- visible Explore subsystem action -->
+  </g>
+</g>
+```
+
+Set `data-schematic-view` to the `id` of another manifest view.
+Make the nested action visible with text such as `Explore subsystem` or `Open data model`.
+The canvas gives the action pointer and keyboard navigation.
+The builder rejects a target that does not match a manifest view.
+
+Use drill-down for meaningful hierarchy, such as system to subsystem or subsystem to runtime flow.
+Do not use it to create one view per file, class, function, or endpoint.
+
 ## Manifest
 
 Use this shape:
@@ -144,6 +166,7 @@ Do not infer readiness or correctness from a green status.
 
 Make each view answer one reader question.
 Use the smallest sufficient set of views.
+Use drill-down actions when a reader benefits from moving from an overview boundary into one focused view.
 Keep the visible diagram within Diagram Design's complexity budget.
 Put long explanation and source links in manifest node details.
 Keep scan-critical names, boundaries, routes, fields, keys, cardinality, and connection labels visible in the SVG.
@@ -161,6 +184,7 @@ Serve or open `index.html` and confirm all of the following:
 
 - Every view opens.
 - Every marked diagram item opens the correct inspector detail.
+- Every drill-down action opens the correct view with a pointer and a keyboard.
 - Clicking the diagram background clears the inspector without changing the rest of the diagram.
 - Search opens the correct view and detail.
 - Pan, zoom, fit, and direct diagram links work.

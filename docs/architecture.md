@@ -3,7 +3,7 @@
 ## Purpose
 
 Schematics teaches agents to plan and explain technical work with durable documents and focused technical views.
-It distributes three Agent Skills and one shared static interaction shell.
+It distributes four Agent Skills and one shared static interaction shell.
 
 ## Product boundary
 
@@ -23,6 +23,7 @@ Each user-facing skill lives under `skills/`.
 
 ```text
 skills/
+├── explain-codebase/
 ├── explain-pr/
 ├── recap-pr/
 └── visual-plan/
@@ -40,7 +41,7 @@ shared/schematics-canvas/
 └── scripts/build_canvas.py
 ```
 
-`visual-plan` and `explain-pr` contain repository-relative links to the shared asset, reference, and builder.
+`visual-plan`, `explain-codebase`, and `explain-pr` contain repository-relative links to the shared asset, reference, and builder.
 The links resolve inside the Claude plugin root.
 skills.sh dereferences them when it copies one skill so the installed skill is self-contained.
 
@@ -72,6 +73,9 @@ Read its installed skill and selected type references during artifact authoring.
 
 This keeps visual composition in one maintained project and planning or explanation semantics in Schematics.
 
+The user-approved Schematics skin deliberately uses the neutral Diagram Design defaults: paper `#f5f5f5`, ink `#2d3142`, and accent `#eb6c36`.
+These tokens are an intentional project decision, not an unreviewed placeholder.
+
 ## Interactive artifact contract
 
 The author writes `canvas-manifest.json` and standalone Diagram Design files under `views/`.
@@ -89,6 +93,9 @@ The shell loads embedded SVG documents from `canvas-data.js` so local file viewi
 `visual-plan` creates a Markdown plan, an interactive canvas, and standalone views.
 The plan remains the source of truth.
 
+`explain-codebase` creates a hierarchical interactive map of current code.
+It keeps code review findings and future-state proposals outside the artifact.
+
 `recap-pr` creates a Markdown recap and at most one optional static Diagram Design map.
 It stays optimized for quick handoff or attachment.
 
@@ -100,7 +107,7 @@ It keeps defects, severity, and merge recommendations outside the artifact.
 Each `SKILL.md` contains its execution path and non-negotiable rules.
 Reference files contain details that load only when needed.
 
-The shared canvas format is linked into both interactive skills so one canonical contract governs the shell.
+The shared canvas format is linked into all three interactive skills so one canonical contract governs the shell.
 
 ## Explicit non-goals
 

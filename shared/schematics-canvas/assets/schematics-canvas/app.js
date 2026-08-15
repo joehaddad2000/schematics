@@ -294,6 +294,13 @@
   function setupFrame(view, selectedNodeId) {
     const doc = frameDocument();
     if (!doc) return;
+    const viewTargets = doc.querySelectorAll("[data-schematic-view]");
+    viewTargets.forEach((target) => {
+      const destination = data.views.find((candidate) => candidate.id === target.dataset.schematicView);
+      target.setAttribute("tabindex", "0");
+      target.setAttribute("role", "link");
+      if (destination) target.setAttribute("aria-label", `Open ${destination.label} view.`);
+    });
     const targets = doc.querySelectorAll("[data-schematic-id]");
     targets.forEach((target) => {
       const node = nodeById(target.dataset.schematicId, view);
@@ -302,6 +309,12 @@
       if (node) target.setAttribute("aria-label", `${node.title}. Open details.`);
     });
     doc.addEventListener("click", (event) => {
+      const viewTarget = event.target.closest?.("[data-schematic-view]");
+      if (viewTarget) {
+        event.preventDefault();
+        switchView(viewTarget.dataset.schematicView);
+        return;
+      }
       const target = event.target.closest?.("[data-schematic-id]");
       if (target) {
         event.preventDefault();
@@ -311,6 +324,12 @@
       }
     });
     doc.addEventListener("keydown", (event) => {
+      const viewTarget = event.target.closest?.("[data-schematic-view]");
+      if (viewTarget && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        switchView(viewTarget.dataset.schematicView);
+        return;
+      }
       const target = event.target.closest?.("[data-schematic-id]");
       if (target && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
@@ -321,7 +340,7 @@
     });
     doc.addEventListener("wheel", handleFrameWheel, { passive: false });
     doc.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0 || event.target.closest?.("[data-schematic-id]")) return;
+      if (event.button !== 0 || event.target.closest?.("[data-schematic-id], [data-schematic-view]")) return;
       startDrag(event.clientX, event.clientY);
     });
     doc.addEventListener("pointermove", (event) => moveDrag(event.clientX, event.clientY));

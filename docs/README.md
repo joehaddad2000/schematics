@@ -30,6 +30,8 @@ The canvas manifest must not duplicate diagram coordinates, edges, or topology.
 | `shared/schematics-canvas/references/canvas-format.md` | Shared interactive artifact contract. |
 | `skills/visual-plan/SKILL.md` | Visual Plan workflow and quality gate. |
 | `skills/visual-plan/references/*.md` | Detailed plan and engineering-diagram guidance. |
+| `skills/explain-codebase/SKILL.md` | Interactive codebase and subsystem explanation workflow. |
+| `skills/explain-codebase/references/*.md` | Codebase scope, evidence, hierarchy, and view rules. |
 | `skills/recap-pr/SKILL.md` | Static pull request recap workflow. |
 | `skills/recap-pr/references/*.md` | Static recap format and verification contract. |
 | `skills/explain-pr/SKILL.md` | Interactive pull request explanation workflow. |

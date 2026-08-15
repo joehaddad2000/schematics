@@ -22,15 +22,18 @@ class CanvasBuildError(ValueError):
     """Raised when a canvas manifest or source view is invalid."""
 
 
-class SchematicIdParser(HTMLParser):
+class SchematicMarkerParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=False)
         self.ids: list[str] = []
+        self.view_targets: list[str] = []
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         for name, value in attrs:
             if name == "data-schematic-id" and value:
                 self.ids.append(value)
+            elif name == "data-schematic-view":
+                self.view_targets.append(value or "")
 
 
 def require_object(value: object, location: str) -> dict:
@@ -132,7 +135,9 @@ def embedded_document(source_html: str, fragment: str, title: str) -> str:
     body {{ display: grid; place-items: center; }}
     body > svg {{ display: block; width: 100%; height: 100%; }}
     [data-schematic-id] {{ cursor: pointer; }}
-    [data-schematic-id]:focus-visible {{ outline: 2px solid #eb6c36; outline-offset: 4px; }}
+    [data-schematic-view] {{ cursor: zoom-in; }}
+    [data-schematic-id]:focus-visible,
+    [data-schematic-view]:focus-visible {{ outline: 2px solid #eb6c36; outline-offset: 4px; }}
   </style>
 </head>
 <body>
@@ -167,9 +172,11 @@ def build_view(view_value: object, index: int, manifest_dir: Path) -> dict:
     source_html = source_path.read_text(encoding="utf-8")
     fragment = extract_fragment(source_html, str(view.get("source")))
     width, height = extract_viewbox(fragment, str(view.get("source")))
-    parser = SchematicIdParser()
+    parser = SchematicMarkerParser()
     parser.feed(fragment)
     unique(parser.ids, f"{location} diagram")
+    for target_index, target_id in enumerate(parser.view_targets):
+        require_id(target_id, f"{location} diagram view target {target_index}")
     marker_ids = set(parser.ids)
     described_ids = set(node_ids)
     missing = sorted(described_ids - marker_ids)
@@ -184,6 +191,7 @@ def build_view(view_value: object, index: int, manifest_dir: Path) -> dict:
     view["height"] = height
     view["html"] = embedded_document(source_html, fragment, question)
     view["source"] = source_path.relative_to(manifest_dir).as_posix()
+    view["_viewTargets"] = parser.view_targets
     return view
 
 
@@ -207,6 +215,13 @@ def build(manifest_path: Path) -> Path:
         raise CanvasBuildError("views must be a non-empty array")
     views = [build_view(view, index, manifest_dir) for index, view in enumerate(views_value)]
     unique([view["id"] for view in views], "views")
+    view_ids = {view["id"] for view in views}
+    for index, view in enumerate(views):
+        unknown_targets = sorted(set(view.pop("_viewTargets")) - view_ids)
+        if unknown_targets:
+            raise CanvasBuildError(
+                f"views[{index}] diagram links to unknown views: {', '.join(unknown_targets)}"
+            )
     manifest["views"] = views
 
     script_path = Path(__file__).resolve()
