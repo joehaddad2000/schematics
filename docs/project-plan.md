@@ -7,7 +7,7 @@
 
 Publish Schematics as four focused Agent Skills with one shared interactive canvas contract.
 Use Diagram Design as the only visual renderer.
-Use Schematics Canvas as the common interaction shell for visual plans, codebase explanations, and full pull request explanations.
+Use Schematics Canvas as the common interaction shell for visual plans, codebase maps, and full pull request explanations.
 Keep the quick pull request recap static.
 
 ## Current skills
@@ -15,13 +15,13 @@ Keep the quick pull request recap static.
 | Skill | Job | Output |
 |---|---|---|
 | `visual-plan` | Plan complex technical work. | Markdown plan plus an interactive canvas of standalone Diagram Design views. |
-| `explain-codebase` | Explain a codebase or scoped subsystem as a system. | Hierarchical interactive canvas with source-backed drill-down views. |
+| `map-codebase` | Map a codebase or scoped subsystem as a system. | Hierarchical interactive canvas with source-backed drill-down views. |
 | `recap-pr` | Create a fast pull request handoff. | Markdown recap plus an optional static change map. |
 | `explain-pr` | Explain a large pull request interactively. | Interactive canvas of standalone Diagram Design views. |
 
 The pull request skills are explanation tools, not code-review tools.
 Possible defects stay in chat unless the user requests a separate review artifact.
-Codebase explanations follow the same separation from review and future-state planning.
+Codebase maps follow the same separation from review and future-state planning.
 
 ## Product evolution
 
@@ -78,7 +78,7 @@ This preserves local-file compatibility and keeps the original standalone views 
 
 - Do not restore the old React application.
 - Do not add canvas-owned nodes, edges, coordinates, or automatic layout.
-- Do not turn codebase explanation into a raw file or import graph.
+- Do not turn a codebase map into a raw file or import graph.
 - Do not turn `recap-pr` into a full interactive overview.
 - Do not vendor Diagram Design.
 - Do not add a package manager or development server.

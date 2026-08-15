@@ -5,7 +5,7 @@ Schematics is a collection of agent skills for planning and explaining technical
 The repository ships four focused skills:
 
 - `visual-plan` creates a Markdown engineering plan and an interactive canvas of architecture, API, data-flow, sequence, or entity-relationship views.
-- `explain-codebase` creates an evidence-backed interactive map of a codebase or scoped subsystem with drill-down views.
+- `map-codebase` creates an evidence-backed interactive map of a codebase or scoped subsystem with drill-down views.
 - `recap-pr` creates a concise Markdown pull request recap and an optional static change map.
 - `explain-pr` creates a neutral interactive pull request overview with clickable system, lifecycle, data, rollout, and evidence views.
 
@@ -39,9 +39,9 @@ docs/plans/YYYY-MM-DD-<short-name>/
 `index.html` is the primary interactive reading surface.
 Each file under `views/` is also a valid standalone Diagram Design artifact.
 
-### Explain Codebase
+### Map Codebase
 
-The codebase explanation uses a hierarchical interactive canvas:
+The codebase map uses a hierarchical interactive canvas:
 
 ```text
 docs/codebase/<short-scope>/
@@ -109,7 +109,7 @@ Install one focused skill when required:
 
 ```bash
 npx skills add joehaddad2000/schematics --skill visual-plan
-npx skills add joehaddad2000/schematics --skill explain-codebase
+npx skills add joehaddad2000/schematics --skill map-codebase
 npx skills add joehaddad2000/schematics --skill recap-pr
 npx skills add joehaddad2000/schematics --skill explain-pr
 ```
@@ -149,7 +149,7 @@ claude plugin install schematics@schematics
 
 Use `claude plugin marketplace add .` when testing the current checkout.
 
-Claude Code exposes `/schematics:visual-plan`, `/schematics:explain-codebase`, `/schematics:recap-pr`, and `/schematics:explain-pr`.
+Claude Code exposes `/schematics:visual-plan`, `/schematics:map-codebase`, `/schematics:recap-pr`, and `/schematics:explain-pr`.
 Claude can also invoke each skill automatically when a request matches its description.
 
 ## Use the skills
@@ -161,10 +161,10 @@ Use $visual-plan to plan a new checkout frontend, public API, order backend, and
 Show internal and external systems, API inputs and outputs, and a real ERD.
 ```
 
-Explain a codebase or one subsystem:
+Map a codebase or one subsystem:
 
 ```text
-Use $explain-codebase to map this repository as a system.
+Use $map-codebase to map this repository as a system.
 Show internal and external boundaries, the primary runtime path, and drill-down views for important subsystems.
 ```
 
@@ -212,7 +212,7 @@ The complete contract is in [Schematics Canvas format](shared/schematics-canvas/
 - Preserve exact technical identifiers.
 - Do not add a second renderer, node schema, edge schema, or coordinate model.
 - Keep pull request explanation artifacts descriptive and neutral.
-- Keep codebase explanations descriptive, source-backed, and separate from code review.
+- Keep codebase maps descriptive, source-backed, and separate from code review.
 - Pin pull request source links to the current head SHA when possible.
 - Separate CI state, local verification, and rollout state.
 
@@ -230,7 +230,7 @@ schematics/
 │       └── scripts/build_canvas.py
 ├── skills/
 │   ├── explain-pr/
-│   ├── explain-codebase/
+│   ├── map-codebase/
 │   ├── recap-pr/
 │   └── visual-plan/
 ├── .gitignore
@@ -253,7 +253,7 @@ Validate each skill:
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/visual-plan
-python3 /path/to/skill-creator/scripts/quick_validate.py skills/explain-codebase
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/map-codebase
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/recap-pr
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/explain-pr
 ```

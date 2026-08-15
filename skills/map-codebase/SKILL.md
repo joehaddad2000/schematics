@@ -1,11 +1,11 @@
 ---
-name: explain-codebase
-description: Create an evidence-backed, interactive visual explanation of a codebase or scoped subsystem with focused Diagram Design views in Schematics Canvas. Use when a reader needs to understand current architecture, module boundaries, runtime paths, APIs, data models, dependencies, entry points, or where to read next. Do not use for future-state planning, pull request explanation, code review, or a raw file or import graph.
+name: map-codebase
+description: Create an evidence-backed, interactive map of a codebase or scoped subsystem with focused Diagram Design views in Schematics Canvas. Use when a reader needs to understand current architecture, module boundaries, runtime paths, APIs, data models, dependencies, entry points, or where to read next. Do not use for future-state planning, pull request explanation, code review, or a raw file or import graph.
 ---
 
-# Explain Codebase
+# Map Codebase
 
-Explain how the current codebase or selected subsystem works.
+Map how the current codebase or selected subsystem works.
 Make the interactive canvas useful before the reader opens the source.
 
 ## Workflow
@@ -26,7 +26,7 @@ Make the interactive canvas useful before the reader opens the source.
 
 ## Non-negotiable boundaries
 
-- Explain observed current behavior, not a desired future state.
+- Map observed current behavior, not a desired future state.
 - Keep defects, severity, recommendations, and refactor proposals outside the canvas unless the user requests a separate artifact.
 - Do not expose secrets, credentials, personal data, or `.env` contents.
 - Use Diagram Design as the only visual renderer.
@@ -36,5 +36,5 @@ Make the interactive canvas useful before the reader opens the source.
 ## Handoff
 
 Return the interactive canvas path, standalone view paths, repository scope, commit, working-tree state, source references used, and verification results.
-State what the explanation covers and what it omits.
+State what the map covers and what it omits.
 Report any review findings separately in chat, not in the canvas.

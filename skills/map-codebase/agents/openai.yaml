@@ -1,0 +1,4 @@
+interface:
+  display_name: "Map Codebase"
+  short_description: "Map code into interactive technical views"
+  default_prompt: "Use $map-codebase to map this codebase or subsystem with an evidence-backed interactive canvas."

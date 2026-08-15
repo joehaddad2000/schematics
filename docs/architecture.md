@@ -23,7 +23,7 @@ Each user-facing skill lives under `skills/`.
 
 ```text
 skills/
-├── explain-codebase/
+├── map-codebase/
 ├── explain-pr/
 ├── recap-pr/
 └── visual-plan/
@@ -41,7 +41,7 @@ shared/schematics-canvas/
 └── scripts/build_canvas.py
 ```
 
-`visual-plan`, `explain-codebase`, and `explain-pr` contain repository-relative links to the shared asset, reference, and builder.
+`visual-plan`, `map-codebase`, and `explain-pr` contain repository-relative links to the shared asset, reference, and builder.
 The links resolve inside the Claude plugin root.
 skills.sh dereferences them when it copies one skill so the installed skill is self-contained.
 
@@ -93,7 +93,7 @@ The shell loads embedded SVG documents from `canvas-data.js` so local file viewi
 `visual-plan` creates a Markdown plan, an interactive canvas, and standalone views.
 The plan remains the source of truth.
 
-`explain-codebase` creates a hierarchical interactive map of current code.
+`map-codebase` creates a hierarchical interactive map of current code.
 It keeps code review findings and future-state proposals outside the artifact.
 
 `recap-pr` creates a Markdown recap and at most one optional static Diagram Design map.

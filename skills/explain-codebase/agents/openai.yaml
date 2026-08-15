@@ -1,4 +1,0 @@
-interface:
-  display_name: "Explain Codebase"
-  short_description: "Map code into interactive technical views"
-  default_prompt: "Use $explain-codebase to explain this codebase or subsystem with an evidence-backed interactive canvas."

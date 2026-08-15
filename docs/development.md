@@ -28,7 +28,7 @@ Preserve exact technical identifiers and examples.
 ## Change Schematics Canvas
 
 Edit the canonical files only under `shared/schematics-canvas/`.
-Do not replace the links under `skills/visual-plan/`, `skills/explain-codebase/`, or `skills/explain-pr/` with copies.
+Do not replace the links under `skills/visual-plan/`, `skills/map-codebase/`, or `skills/explain-pr/` with copies.
 
 Preserve these boundaries:
 
@@ -57,13 +57,13 @@ Do not test Markdown wording, private function structure, or exact generated sou
 npx skills add . --list
 ```
 
-The output must list exactly `visual-plan`, `explain-codebase`, `recap-pr`, and `explain-pr`.
+The output must list exactly `visual-plan`, `map-codebase`, `recap-pr`, and `explain-pr`.
 
 ## Validate skill metadata
 
 ```bash
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/visual-plan
-python3 /path/to/skill-creator/scripts/quick_validate.py skills/explain-codebase
+python3 /path/to/skill-creator/scripts/quick_validate.py skills/map-codebase
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/recap-pr
 python3 /path/to/skill-creator/scripts/quick_validate.py skills/explain-pr
 ```
@@ -106,7 +106,7 @@ npx skills add /absolute/path/to/schematics \
 ```
 
 Confirm that the installed skill contains its own `assets/schematics-canvas/`, `scripts/build_canvas.py`, and `references/canvas-format.md`.
-Repeat for `explain-codebase` and `explain-pr`.
+Repeat for `map-codebase` and `explain-pr`.
 
 ## Change plugin metadata
 

@@ -1,4 +1,4 @@
-# Interactive codebase explanation format
+# Interactive codebase map format
 
 ## Output
 
