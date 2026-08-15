@@ -291,49 +291,45 @@
     setScale(state.scale * Math.exp(-event.deltaY * 0.0012), anchorX, anchorY, viewportRect);
   }
 
+  function activateFrameTarget(target) {
+    const viewTarget = target.closest?.("[data-schematic-view]");
+    if (viewTarget) {
+      switchView(viewTarget.dataset.schematicView);
+      return true;
+    }
+    const nodeTarget = target.closest?.("[data-schematic-id]");
+    if (nodeTarget) {
+      selectNode(nodeTarget.dataset.schematicId);
+      return true;
+    }
+    return false;
+  }
+
   function setupFrame(view, selectedNodeId) {
     const doc = frameDocument();
     if (!doc) return;
-    const viewTargets = doc.querySelectorAll("[data-schematic-view]");
-    viewTargets.forEach((target) => {
-      const destination = data.views.find((candidate) => candidate.id === target.dataset.schematicView);
+    doc.querySelectorAll("[data-schematic-view], [data-schematic-id]").forEach((target) => {
       target.setAttribute("tabindex", "0");
-      target.setAttribute("role", "link");
-      if (destination) target.setAttribute("aria-label", `Open ${destination.label} view.`);
-    });
-    const targets = doc.querySelectorAll("[data-schematic-id]");
-    targets.forEach((target) => {
-      const node = nodeById(target.dataset.schematicId, view);
-      target.setAttribute("tabindex", "0");
-      target.setAttribute("role", "button");
-      if (node) target.setAttribute("aria-label", `${node.title}. Open details.`);
+      if (target.dataset.schematicView) {
+        const destination = data.views.find((candidate) => candidate.id === target.dataset.schematicView);
+        target.setAttribute("role", "link");
+        if (destination) target.setAttribute("aria-label", `Open ${destination.label} view.`);
+      } else {
+        const node = nodeById(target.dataset.schematicId, view);
+        target.setAttribute("role", "button");
+        if (node) target.setAttribute("aria-label", `${node.title}. Open details.`);
+      }
     });
     doc.addEventListener("click", (event) => {
-      const viewTarget = event.target.closest?.("[data-schematic-view]");
-      if (viewTarget) {
+      if (activateFrameTarget(event.target)) {
         event.preventDefault();
-        switchView(viewTarget.dataset.schematicView);
-        return;
-      }
-      const target = event.target.closest?.("[data-schematic-id]");
-      if (target) {
-        event.preventDefault();
-        selectNode(target.dataset.schematicId);
       } else if (!state.dragMoved) {
         clearSelection();
       }
     });
     doc.addEventListener("keydown", (event) => {
-      const viewTarget = event.target.closest?.("[data-schematic-view]");
-      if (viewTarget && (event.key === "Enter" || event.key === " ")) {
+      if ((event.key === "Enter" || event.key === " ") && activateFrameTarget(event.target)) {
         event.preventDefault();
-        switchView(viewTarget.dataset.schematicView);
-        return;
-      }
-      const target = event.target.closest?.("[data-schematic-id]");
-      if (target && (event.key === "Enter" || event.key === " ")) {
-        event.preventDefault();
-        selectNode(target.dataset.schematicId);
       } else if (event.key === "Escape") {
         clearSelection();
       }

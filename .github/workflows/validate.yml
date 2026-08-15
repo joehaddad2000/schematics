@@ -41,66 +41,38 @@ jobs:
           test -f "$artifact_dir/canvas-data.js"
           node --check "$artifact_dir/app.js"
 
-      - name: Reject an incomplete canvas contract
+      - name: Reject invalid canvas contracts
         run: |
-          artifact_dir="$(mktemp -d)"
-          cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
-          python - "$artifact_dir/canvas-manifest.json" <<'PY'
+          for case_name in missing-marker missing-view empty-view; do
+            artifact_dir="$(mktemp -d)"
+            cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
+            python - "$artifact_dir" "$case_name" <<'PY'
           import json
           import pathlib
           import sys
 
-          path = pathlib.Path(sys.argv[1])
-          data = json.loads(path.read_text())
-          data["views"][0]["nodes"][0]["id"] = "missing-marker"
-          path.write_text(json.dumps(data, indent=2) + "\n")
-          PY
-          if python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"; then
-            echo "Builder accepted an inspector item without a diagram marker" >&2
-            exit 1
-          fi
-
-      - name: Reject an unknown drill-down target
-        run: |
-          artifact_dir="$(mktemp -d)"
-          cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
-          python - "$artifact_dir/views/request-path.html" <<'PY'
-          import pathlib
-          import sys
-
-          path = pathlib.Path(sys.argv[1])
-          path.write_text(
-              path.read_text().replace(
-                  'data-schematic-view="api-internals"',
-                  'data-schematic-view="missing-view"',
+          artifact = pathlib.Path(sys.argv[1])
+          case_name = sys.argv[2]
+          if case_name == "missing-marker":
+              path = artifact / "canvas-manifest.json"
+              data = json.loads(path.read_text())
+              data["views"][0]["nodes"][0]["id"] = "missing-marker"
+              path.write_text(json.dumps(data, indent=2) + "\n")
+          else:
+              path = artifact / "views/request-path.html"
+              target = "missing-view" if case_name == "missing-view" else ""
+              path.write_text(
+                  path.read_text().replace(
+                      'data-schematic-view="api-internals"',
+                      f'data-schematic-view="{target}"',
+                  )
               )
-          )
           PY
-          if python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"; then
-            echo "Builder accepted an unknown drill-down target" >&2
-            exit 1
-          fi
-
-      - name: Reject an invalid drill-down target
-        run: |
-          artifact_dir="$(mktemp -d)"
-          cp -R shared/schematics-canvas/examples/minimal/. "$artifact_dir/"
-          python - "$artifact_dir/views/request-path.html" <<'PY'
-          import pathlib
-          import sys
-
-          path = pathlib.Path(sys.argv[1])
-          path.write_text(
-              path.read_text().replace(
-                  'data-schematic-view="api-internals"',
-                  'data-schematic-view=""',
-              )
-          )
-          PY
-          if python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"; then
-            echo "Builder accepted an empty drill-down target" >&2
-            exit 1
-          fi
+            if python shared/schematics-canvas/scripts/build_canvas.py "$artifact_dir/canvas-manifest.json"; then
+              echo "Builder accepted invalid canvas contract: $case_name" >&2
+              exit 1
+            fi
+          done
 
       - name: Check individual interactive skill installation
         run: |

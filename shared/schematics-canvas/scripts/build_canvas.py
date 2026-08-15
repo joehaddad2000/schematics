@@ -134,7 +134,7 @@ def embedded_document(source_html: str, fragment: str, title: str) -> str:
     html, body {{ width: 100%; height: 100%; margin: 0; overflow: hidden; background: #f5f5f5; }}
     body {{ display: grid; place-items: center; }}
     body > svg {{ display: block; width: 100%; height: 100%; }}
-    [data-schematic-id] {{ cursor: pointer; }}
+    [data-schematic-id],
     [data-schematic-view] {{ cursor: pointer; }}
     [data-schematic-id]:focus-visible,
     [data-schematic-view]:focus-visible {{ outline: 2px solid #eb6c36; outline-offset: 4px; }}

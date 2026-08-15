@@ -2,20 +2,8 @@
 
 ## Output
 
-Create this structure unless the user or repository gives another location:
-
-```text
-docs/codebase/<short-scope>/
-├── index.html
-├── app.css
-├── app.js
-├── canvas-data.js
-├── canvas-manifest.json
-└── views/
-    └── <focused-view>.html
-```
-
-Follow [canvas-format.md](canvas-format.md) for the shared manifest, Diagram Design marker, build, and interaction contract.
+Create the artifact under `docs/codebase/<short-scope>/` unless the user or repository gives another location.
+Follow the complete output, manifest, Diagram Design marker, build, and interaction contract in [canvas-format.md](canvas-format.md).
 Create every visible topology as a Diagram Design source view.
 
 ## Scope and snapshot
